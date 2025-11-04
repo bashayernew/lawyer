@@ -1,0 +1,129 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "team": "Team",
+    "clients": "Clients",
+    "contact": "Contact"
+  },
+  "footer": {
+    "navigate": "Navigate",
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "team": "Team",
+    "clients": "Clients",
+    "contact": "Contact",
+    "address": "Al-Shaab Al-Bahri – Block 8 – Al-Khaleej Al-Arabi Street – Dana Plaza Tower – next to Flex VIP Club – 5th floor – Office 505",
+    "closing": "In conclusion, the family of Rekaz Legal Group extends its highest thanks and appreciation… With you, the banner of Rekaz continues to flutter."
+  },
+  "home": {
+    "headline": "Legal expertise with speed, efficiency, and achievement",
+    "subhead": "Since 2013, Rekaz Legal Group has served clients across consulting, litigation, and corporate matters with trusted counsel and precise execution.",
+    "contactUs": "Contact Us",
+    "learnMore": "Learn more",
+    "ourServices": "Our Services",
+    "viewAll": "View all services",
+    "ourClients": "Trusted by clients across sectors",
+    "aboutAlt": "Rekaz Legal Group team at work",
+    "ctaTitle": "Ready to move forward with confidence?"
+  },
+  "about": {
+    "title": "Who We Are",
+    "whoWeAre": "Rekaz Legal Group has practiced law since 2013, providing legal advice and research in local and international law. The group brings together distinguished lawyers, consultants, and researchers registered in approved bars and associations. Rekaz also pursues its activities through strategic partnerships abroad.",
+    "principlesTitle": "Principles & Values",
+    "principles": [
+      { "title": "Speed", "text": "Timely decisions, prompt responses, and adherence to correct legal procedures." },
+      { "title": "Efficiency", "text": "Specialized teams across legal, administrative, and advisory fields with 20+ years of combined experience." },
+      { "title": "Achievement", "text": "Striving for the best outcomes while preserving clients’ rights and property." }
+    ]
+  },
+  "services": {
+    "title": "Services",
+    "list": [
+      { "key": "consulting", "icon": "🧩", "title": "Consulting", "summary": "Commercial, administrative, financial, labor; corporate regulations; foreign investment; personal status; civil/criminal aspects; ongoing or annual advisory.", "body": "" },
+      { "key": "contracts", "icon": "📜", "title": "Contracts and Agreements", "summary": "Drafting and reviewing all types; compliance; registrations and amendments.", "body": "" },
+      { "key": "commercial", "icon": "🏛️", "title": "Commercial & Financial Issues", "summary": "Pleadings, banking matters, bylaws and structures; registrations, commercial records, licenses.", "body": "Pleading and defending before all competent authorities in disputes of every kind, whether financial or commercial, and attending their hearings. The group also conducts studies and prepares bylaws, internal regulations and administrative structures for institutions, companies and public‑benefit associations, in addition to registering commercial agencies, extracting commercial records and industrial licenses, and making the necessary amendments and cancellations." },
+      { "key": "labor", "icon": "👔", "title": "Work & Workers", "summary": "Labor disputes, compensation, employment contracts, work regulations (sanctions/rewards).", "body": "Filing labor‑dispute and compensation cases and related dues before courts and specialized committees, and drafting employment contracts, work regulations and workers’ policies (sanctions, rewards, etc.). These regulations define the rights and duties of both the employer and the worker in institutions, companies and commercial establishments of all kinds." },
+      { "key": "ip", "icon": "™️", "title": "Trademarks, Agencies & IP", "summary": "Registration (local/regional/global), patents, copyright, anti-counterfeiting, Competition Authority complaints.", "body": "Registration of local, regional and global trademarks for commercial agencies; patents; copyrights and publication rights; combating counterfeiting, imitation and commercial fraud; and providing advice on trademarks, patents and copyrights. This includes handling lawsuits related to disputes over ownership of trademarks and complaints submitted to the Competition Protection Authority, and infringement of intellectual‑property rights." },
+      { "key": "criminal", "icon": "⚖️", "title": "Criminal Cases", "summary": "Complaints and reports in commercial/professional transactions; traffic and construction site incidents; representation in crimes.", "body": "Raising and following up complaints and criminal reports related to commercial and professional transactions, in addition to traffic accidents and incidents at construction sites, and representation in criminal cases resulting from crimes." },
+      { "key": "personal", "icon": "👪", "title": "Personal Status", "summary": "Disputes, divorce/khulʿ, custody/guardianship, inheritance/wills, lineage.", "body": "Issues of marital disputes in all sects and religions; divorce, khulʿ and judicial separation; custody and guardianship; inheritance distribution; lawsuits related to proving and denying lineage; wills and related issues." },
+      { "key": "banks", "icon": "🏦", "title": "Banks & Exchange Institutions", "summary": "Financing documents; claims for/against banks; legal formulations for loans, mortgages, guarantees, seizures.", "body": "Providing advice on financing documents, loans and facilities granted by banks for all types of financing; filing lawsuits and claims against debtors on behalf of banks and creditors locally and internationally; representing individuals and companies in disputes against banks; and preparing legal formulations for loan agreements, mortgages and various guarantee bonds, as well as seizure and what relates to commercial and financial transactions." },
+      { "key": "collection", "icon": "💼", "title": "Collection", "summary": "Amicable then judicial claims until rights are fulfilled and settlements made.", "body": "Collecting the debts of legal and natural persons from individuals and companies, starting by amicable means and ending with judicial claims, until rights are fulfilled and financial settlements are made." },
+      { "key": "insurance", "icon": "🛡️", "title": "Insurance", "summary": "Disputes including workers’ comp, medical policies, fires, professional negligence, third-party, cargo, crew responsibilities.", "body": "Cases and claims arising from various insurance disputes, including workers’ compensation, medical insurance policies, insurance against fires, professional negligence, liability against third parties, cargo insurance during transportation, and crew responsibilities." },
+      { "key": "companies", "icon": "📈", "title": "Establishment, Registration, Merger & Liquidation of Companies", "summary": "Incorporation, records, contract amendments, mergers, liquidation, bankruptcy.", "body": "Preparing incorporation contracts for companies of all kinds; taking all necessary procedures for incorporation and extracting commercial and subsidiary records; amending contracts according to the partners’ wishes; and taking all necessary measures to merge companies (with sister companies or with partners owned by other parties), liquidate companies and declare bankruptcy, while giving everyone his right." },
+      { "key": "training", "icon": "🎓", "title": "Training & Development", "summary": "Lectures, courses, forums for senior cadres; tackling workplace legal issues.", "body": "" },
+      { "key": "e-services", "icon": "💻", "title": "Electronic Services", "summary": "Managing electronic accounts; monitoring abuse; protection policies; website protection systems.", "body": "" },
+      { "key": "international", "icon": "🌍", "title": "International Foreign Section", "summary": "Research, international arbitration, cross-border contracts, English legal drafting/review; defense notes and execution of foreign judgments.", "body": "It undertakes the preparation of legal research, dealing with claims of a foreign element and international arbitration cases, preparing contracts of an international character in various fields of law, and concluding and editing all deals and contracts that require legal preparation or legal review in English with approved legal translation of all terms contained therein. It also prepares fatwas, consultations and contracts, defense notes, and oversees the execution of foreign judgments." },
+      { "key": "medical", "icon": "⚕️", "title": "Responsibility of the Medical Sector", "summary": "Mechanisms for medical centers; contracts; alignment with Kuwait Vision 2035.", "body": "The State has paid great attention to the medical sector within its strategic vision Kuwait 2035 towards achieving leadership in health services in accordance with international frameworks and standards. The group possesses the expertise and practical experience in the medical sector by developing pure legal mechanisms for dealing with the center’s staff of doctors and assistants on the one hand, and with patients and the contracts concluded by the facility with companies on the other hand." }
+    ]
+  },
+  "team": {
+    "members": [
+      {
+        "name": "Abdul Rahman Al-Saqlawi",
+        "role": "Executive Director",
+        "image": "/team/abdulrahman.jpg",
+        "bullets": [
+          "Founding member (2013)",
+          "LLB Ajman University (2007)",
+          "Board member – Center for International Relations (Kuwaiti Bar) 2019",
+          "Chairman – Social Committee (Kuwaiti Lawyers Association) 2017",
+          "Dubai Judicial Institute Practical Training (60h, 2012)",
+          "Specialist in AML/CFT Law 2015",
+          "Certified International Arbitrator (Commercial) Geneva 2011"
+        ]
+      },
+      {
+        "name": "Saleh Al-Saqlawi",
+        "role": "Head of International Relations & Cooperation",
+        "image": "/team/saleh.jpg",
+        "bullets": [
+          "Partner member",
+          "LLB University of Sharjah 2015",
+          "Master researcher in Public Law (UAE – Sharjah Univ 2019)",
+          "Specialization in administrative cases (cancellation/compensation/contracts/execution)",
+          "Practical training for federal courts & prosecutions (UAE 2019)"
+        ]
+      },
+      {
+        "name": "Iman Abdul Rahman Al-Hashash",
+        "role": "Lawyer",
+        "image": "/team/eman.jpg",
+        "bullets": [
+          "Member of Rekaz",
+          "Lawyer in Constitutional & Cassation Court",
+          "LLB Ajman University 2014",
+          "Specializes in Personal Status, Administrative Law, Medical Liability",
+          "Former legal researcher at Ministry of Interior"
+        ]
+      },
+      {
+        "name": "Abdullah Ali Al-Meaaan",
+        "role": "Lawyer",
+        "image": "/team/abdullah.jpg",
+        "bullets": [
+          "Former legal researcher – Ministry of Defense",
+          "Member – Kuwaiti Jurists Association",
+          "Legal trainer preparation course",
+          "AML course (Law 106/2013)",
+          "Bankruptcy law course – Judicial Training Institute (UAE)",
+          "Course on Union Law No.10/2019 (judicial relations)"
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "address": "Al-Shaab Al-Bahri – Block 8 – Al-Khaleej Al-Arabi Street – Dana Plaza Tower – next to Flex VIP Club – 5th floor – Office 505",
+    "website": "www.rekaz.com.kw",
+    "email": "info@rekaz.com.kw",
+    "phones": {
+      "legal": "66633760",
+      "financial": "50922149"
+    },
+    "social": "@RekazKw"
+  }
+}
+
+

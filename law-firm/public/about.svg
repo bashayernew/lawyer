@@ -1,0 +1,13 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0%" stop-color="#0F3D3E"/>
+      <stop offset="100%" stop-color="#145A32"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="#fff"/>
+  <rect x="60" y="80" width="680" height="440" rx="24" fill="#E5E7EB"/>
+  <path d="M60 300 C 220 200, 580 420, 740 260" fill="none" stroke="url(#g)" stroke-width="20" opacity="0.9"/>
+  <path d="M60 340 C 220 240, 580 460, 740 300" fill="none" stroke="#D6AE7B" stroke-width="6" opacity="0.8"/>
+  <text x="400" y="320" text-anchor="middle" font-family="Inter, Arial" font-size="28" fill="#1F2937">About Rekaz Legal Group</text>
+</svg>

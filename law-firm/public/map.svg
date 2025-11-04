@@ -1,0 +1,26 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#E5E7EB"/>
+  <g opacity="0.5" stroke="#FFFFFF">
+    <path d="M0 40 H1200"/>
+    <path d="M0 80 H1200"/>
+    <path d="M0 120 H1200"/>
+    <path d="M0 160 H1200"/>
+    <path d="M0 200 H1200"/>
+    <path d="M0 240 H1200"/>
+    <path d="M0 280 H1200"/>
+    <path d="M0 320 H1200"/>
+    <path d="M0 360 H1200"/>
+    <path d="M0 400 H1200"/>
+    <path d="M0 440 H1200"/>
+    <path d="M0 480 H1200"/>
+    <path d="M0 520 H1200"/>
+    <path d="M0 560 H1200"/>
+    <path d="M0 600 H1200"/>
+    <path d="M0 640 H1200"/>
+    <path d="M0 680 H1200"/>
+    <path d="M0 720 H1200"/>
+  </g>
+  <circle cx="600" cy="400" r="14" fill="#D6AE7B" stroke="#0F3D3E" stroke-width="4"/>
+  <text x="620" y="410" font-family="Inter, Arial" font-size="20" fill="#1F2937">Rukaz Legal Group</text>
+</svg>
+

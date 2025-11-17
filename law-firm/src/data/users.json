@@ -1,0 +1,32 @@
+[
+  {
+    "id": "default-admin",
+    "name": "Admin",
+    "email": "admin@123123.com",
+    "password": "law123123",
+    "role": "admin",
+    "active": true,
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1762952057843",
+    "name": "bashyer",
+    "email": "bashyer@123123",
+    "password": "bashayer123123",
+    "role": "editor",
+    "active": true,
+    "createdAt": "2025-11-12T12:54:17.843Z",
+    "updatedAt": "2025-11-17T14:04:34.773Z"
+  },
+  {
+    "id": "1762952090100",
+    "name": "manayer",
+    "email": "manayer@123123",
+    "password": "manayer123123",
+    "role": "viewer",
+    "active": true,
+    "createdAt": "2025-11-12T12:54:50.100Z",
+    "updatedAt": "2025-11-12T12:54:50.100Z"
+  }
+]

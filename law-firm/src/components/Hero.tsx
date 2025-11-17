@@ -25,7 +25,7 @@ export default function Hero({ locale, title, subhead, cta }: { locale: 'en' | '
           initial={prefersReduced ? undefined : { opacity: 0, y: 20 }}
           animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="max-w-4xl"
+          className="max-w-4xl mx-auto text-center"
         >
           <motion.h1 
             className="text-3xl md:text-5xl font-bold text-white leading-tight mb-5"
@@ -36,7 +36,7 @@ export default function Hero({ locale, title, subhead, cta }: { locale: 'en' | '
             {title}
           </motion.h1>
           <motion.p 
-            className="text-base md:text-lg text-white/90 max-w-2xl mb-6 leading-relaxed"
+            className="text-base md:text-lg text-white/90 max-w-2xl mx-auto mb-6 leading-relaxed"
             initial={prefersReduced ? undefined : { opacity: 0, y: 12 }}
             animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
@@ -44,7 +44,7 @@ export default function Hero({ locale, title, subhead, cta }: { locale: 'en' | '
             {subhead}
           </motion.p>
           <motion.div 
-            className="mt-8"
+            className="mt-8 flex justify-center"
             initial={prefersReduced ? undefined : { opacity: 0, y: 12 }}
             animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}

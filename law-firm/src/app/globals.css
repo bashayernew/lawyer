@@ -51,11 +51,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary { 
-  @apply bg-primary/90 text-white border-primary hover:bg-primary hover:border-primary;
+  @apply bg-forest text-white border-forest hover:bg-[#0d4a2a] hover:border-[#0d4a2a];
 }
 
 .btn-gold { 
-  @apply bg-accent text-white border-accent hover:bg-[#C19D6F] hover:border-[#C19D6F];
+  @apply bg-forest text-white border-forest hover:bg-[#0d4a2a] hover:border-[#0d4a2a];
   @apply shadow-lg hover:shadow-xl;
 }
 

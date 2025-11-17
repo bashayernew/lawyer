@@ -2,8 +2,8 @@
 import Image from 'next/image'
 import { useState } from 'react'
 
-// Use the 24 uploaded logos renamed to brand-01.png ... brand-24.png
-const logos = Array.from({ length: 24 }, (_v, i) => `brand-${String(i + 1).padStart(2, '0')}.png`)
+// Use the 23 uploaded logos renamed to brand-01.png ... brand-23.png
+const logos = Array.from({ length: 23 }, (_v, i) => `brand-${String(i + 1).padStart(2, '0')}.png`)
 
 export default function LogoWall() {
   const [hidden, setHidden] = useState<Record<string, boolean>>({})

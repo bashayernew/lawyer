@@ -21,8 +21,8 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
                 <MapPin className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1">
-                <div className="text-sm font-medium text-neutral-500 mb-1">Address</div>
-                <div className="text-sm text-neutral-700">{c.address}</div>
+                <div className="text-sm font-semibold text-neutral-700 mb-1">Address</div>
+                <div className="text-sm font-medium text-neutral-900">{c.address}</div>
               </div>
             </div>
           </div>
@@ -32,8 +32,8 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
                 <MessageCircle className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1">
-                <div className="text-sm font-medium text-neutral-500 mb-1">Legal Admin (WhatsApp)</div>
-                <div className="text-sm font-semibold text-primary">{c.phones.legal}</div>
+                <div className="text-sm font-semibold text-neutral-700 mb-1">Legal Admin (WhatsApp)</div>
+                <div className="text-base font-bold text-primary">{c.phones.legal}</div>
               </div>
             </div>
           </a>
@@ -43,8 +43,8 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
                 <Phone className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1">
-                <div className="text-sm font-medium text-neutral-500 mb-1">Financial Admin</div>
-                <div className="text-sm font-semibold text-primary">{c.phones.financial}</div>
+                <div className="text-sm font-semibold text-neutral-700 mb-1">Financial Admin</div>
+                <div className="text-base font-bold text-primary">{c.phones.financial}</div>
               </div>
             </div>
           </a>
@@ -54,8 +54,8 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
                 <Mail className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1">
-                <div className="text-sm font-medium text-neutral-500 mb-1">Email</div>
-                <div className="text-sm font-semibold text-primary">{c.email}</div>
+                <div className="text-sm font-semibold text-neutral-700 mb-1">Email</div>
+                <div className="text-base font-bold text-primary">{c.email}</div>
               </div>
             </div>
           </a>
@@ -65,20 +65,26 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
                 <Globe className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1">
-                <div className="text-sm font-medium text-neutral-500 mb-1">Website</div>
-                <div className="text-sm font-semibold text-primary">{c.website}</div>
+                <div className="text-sm font-semibold text-neutral-700 mb-1">Website</div>
+                <div className="text-base font-bold text-primary">{c.website}</div>
               </div>
             </div>
           </a>
         </div>
         {/* Client-only form to avoid serializing handlers during SSG */}
-        <ContactForm placeholders={{
-          name: locale === 'ar' ? 'الاسم الكامل' : 'Full Name',
-          email: locale === 'ar' ? 'البريد الإلكتروني' : 'Email',
-          phone: locale === 'ar' ? 'الهاتف' : 'Phone',
-          message: locale === 'ar' ? 'الرسالة' : 'Message',
-          submit: locale === 'ar' ? 'إرسال' : 'Send'
-        }} />
+        <ContactForm
+          placeholders={{
+            name: locale === 'ar' ? 'الاسم الكامل' : 'Full Name',
+            email: locale === 'ar' ? 'البريد الإلكتروني' : 'Email',
+            phone: locale === 'ar' ? 'الهاتف' : 'Phone',
+            message: locale === 'ar' ? 'الرسالة' : 'Message',
+            preferredDate: locale === 'ar' ? 'التاريخ المفضل' : 'Preferred date',
+            submit: locale === 'ar' ? 'إرسال' : 'Send',
+            success: locale === 'ar' ? 'شكراً لك! سيتواصل معك فريقنا قريباً.' : 'Thank you! Our team will reach out shortly.',
+            error: locale === 'ar' ? 'تعذّر إرسال الطلب، حاول مرة أخرى.' : 'Unable to send your request. Please try again.',
+            locale
+          }}
+        />
         {/* Map placed directly under the cards/form section */}
         <div className="md:col-span-2">
           <div className="relative w-full overflow-hidden rounded-xl border aspect-[16/9] max-h-[300px]">

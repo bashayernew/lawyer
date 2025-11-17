@@ -7,8 +7,8 @@ export default function Footer({ locale: _locale }: { locale?: 'en' | 'ar' }) {
   const locale = (pathname?.startsWith('/ar') ? 'ar' : pathname?.startsWith('/en') ? 'en' : (_locale ?? 'ar')) as 'en' | 'ar'
   const t = (key: string) => {
     const map = locale === 'ar'
-      ? { navigate: 'تصفّح', home: 'الرئيسية', about: 'من نحن', services: 'الخدمات', team: 'الفريق', clients: 'العملاء', contact: 'تواصل', address: 'الشعب البحري – قطعة ٨ – شارع الخليج العربي – برج دانة بلازا – بجانب نادي فلكس VIP – الدور الخامس – مكتب ٥٠٥', closing: 'في ختام الأمر… نثمّن ثقتكم… ومعكم تظل راية ركاز خفّاقة.' }
-      : { navigate: 'Navigate', home: 'Home', about: 'About', services: 'Services', team: 'Team', clients: 'Clients', contact: 'Contact', address: 'Al-Shaab Al-Bahri – Block 8 – Al-Khaleej Al-Arabi Street – Dana Plaza Tower – next to Flex VIP Club – 5th floor – Office 505', closing: 'In conclusion, the family of Rekaz Legal Group extends its highest thanks and appreciation… With you, the banner of Rekaz continues to flutter.' }
+      ? { navigate: 'تصفّح', home: 'الرئيسية', services: 'الخدمات', team: 'الفريق', blog: 'المدونة', contact: 'تواصل', address: 'الشعب البحري – قطعة ٨ – شارع الخليج العربي – برج دانة بلازا – بجانب نادي فلكس VIP – الدور الخامس – مكتب ٥٠٥', closing: 'في ختام الأمر… نثمّن ثقتكم… ومعكم تظل راية ركاز خفّاقة.' }
+      : { navigate: 'Navigate', home: 'Home', services: 'Services', team: 'Team', blog: 'Blog', contact: 'Contact', address: 'Al-Shaab Al-Bahri – Block 8 – Al-Khaleej Al-Arabi Street – Dana Plaza Tower – next to Flex VIP Club – 5th floor – Office 505', closing: 'In conclusion, the family of Rekaz Legal Group extends its highest thanks and appreciation… With you, the banner of Rekaz continues to flutter.' }
     return (map as any)[key]
   }
   return (
@@ -23,10 +23,9 @@ export default function Footer({ locale: _locale }: { locale?: 'en' | 'ar' }) {
             <div className="font-semibold mb-3">{t('navigate')}</div>
             <ul className="grid grid-cols-2 gap-2 text-sm">
               <li><Link href={`/${locale}`} className="text-white/80 hover:text-white transition-colors">{t('home')}</Link></li>
-              <li><Link href={`/${locale}/about`} className="text-white/80 hover:text-white transition-colors">{t('about')}</Link></li>
-              <li><Link href={`/${locale}/services`} className="text-white/80 hover:text-white transition-colors">{t('services')}</Link></li>
               <li><Link href={`/${locale}/team`} className="text-white/80 hover:text-white transition-colors">{t('team')}</Link></li>
-              <li><Link href={`/${locale}#clients`} className="text-white/80 hover:text-white transition-colors">{t('clients')}</Link></li>
+              <li><Link href={`/${locale}/services`} className="text-white/80 hover:text-white transition-colors">{t('services')}</Link></li>
+              <li><Link href={`/${locale}/blog`} className="text-white/80 hover:text-white transition-colors">{t('blog')}</Link></li>
               <li><Link href={`/${locale}/contact`} className="text-white/80 hover:text-white transition-colors">{t('contact')}</Link></li>
             </ul>
           </div>

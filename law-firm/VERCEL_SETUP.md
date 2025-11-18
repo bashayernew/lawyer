@@ -37,7 +37,38 @@ Vercel's serverless functions have a read-only file system, so we need Vercel KV
    - `KV_REST_API_TOKEN`
    - `KV_REST_API_READ_ONLY_TOKEN`
 
-### 4. Redeploy
+### 4. Set Email Configuration (for contact form notifications)
+
+To receive email notifications when someone submits the contact form:
+
+1. In the Environment Variables section, add:
+   - **Name**: `SMTP_HOST`
+   - **Value**: Your SMTP server (e.g., `smtp.gmail.com` for Gmail)
+   - **Environment**: Select all
+2. Add:
+   - **Name**: `SMTP_PORT`
+   - **Value**: `587` (or `465` for SSL)
+   - **Environment**: Select all
+3. Add:
+   - **Name**: `SMTP_USER`
+   - **Value**: Your email address
+   - **Environment**: Select all
+4. Add:
+   - **Name**: `SMTP_PASS`
+   - **Value**: Your email password or app password (for Gmail, use an App Password)
+   - **Environment**: Select all
+5. Add:
+   - **Name**: `MAIL_FROM`
+   - **Value**: Sender email (e.g., `noreply@yourdomain.com`)
+   - **Environment**: Select all
+6. Add:
+   - **Name**: `MAIL_TO`
+   - **Value**: Your email address where you want to receive contact form submissions
+   - **Environment**: Select all
+
+**Note**: If email is not configured, contact form submissions will still be saved in the admin dashboard, but you won't receive email notifications.
+
+### 5. Redeploy
 
 After setting up the environment variables:
 

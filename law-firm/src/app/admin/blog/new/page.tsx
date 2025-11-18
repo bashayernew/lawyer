@@ -40,7 +40,13 @@ export default function NewBlogPostPage() {
     if (!authenticated) {
       router.replace('/admin')
     }
-  }, [router])
+    
+    // Check if admin secret is configured
+    if (!adminSecret) {
+      console.warn('NEXT_PUBLIC_ADMIN_SECRET is not set. Please configure it in Vercel environment variables.')
+      setError('Admin secret not configured. Please set NEXT_PUBLIC_ADMIN_SECRET in Vercel environment variables.')
+    }
+  }, [router, adminSecret])
 
   const handleAddLink = () => {
     setLinks((prev) => [...prev, { textEn: '', textAr: '', url: '' }])

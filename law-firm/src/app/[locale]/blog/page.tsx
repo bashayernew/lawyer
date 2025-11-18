@@ -60,8 +60,13 @@ export default function BlogPage({ params: { locale } }: { params: { locale: 'en
         })
         if (res.ok) {
           const data = await res.json()
+          console.log('Fetched blogs:', data.length, data)
           setBlogs(data)
           setFilteredBlogs(data)
+        } else {
+          console.error('Failed to fetch blogs:', res.status, res.statusText)
+          const errorData = await res.json().catch(() => ({}))
+          console.error('Error details:', errorData)
         }
       } catch (error) {
         console.error('Error fetching blogs:', error)

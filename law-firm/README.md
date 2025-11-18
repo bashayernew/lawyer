@@ -7,7 +7,9 @@ Run locally:
 
 Open http://localhost:3000
 
-Env (email) — create .env.local:
+Env — create .env.local:
+
+Email (SMTP):
 - SMTP_HOST=your.smtp.host
 - SMTP_PORT=587
 - SMTP_USER=your_user

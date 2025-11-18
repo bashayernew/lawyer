@@ -72,12 +72,29 @@ export function readBlogs(): BlogRecord[] {
 }
 
 export async function readBlogsAsync(): Promise<BlogRecord[]> {
-  // Try KV first, fallback to file system
+  // Try KV first (for production)
   const kvBlogs = await readBlogsFromKV()
-  if (kvBlogs !== null) {
+  if (kvBlogs !== null && kvBlogs.length > 0) {
     return kvBlogs
   }
-  return readBlogs()
+  
+  // Fallback to file system (for local dev or if KV is empty)
+  try {
+    const fileBlogs = readBlogs()
+    // If we have file blogs but KV is empty, try to migrate
+    if (fileBlogs.length > 0 && process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+      try {
+        await kv.set(KV_BLOGS_KEY, fileBlogs)
+        console.log(`Migrated ${fileBlogs.length} blogs from file system to KV`)
+      } catch (err) {
+        console.error('Failed to migrate blogs to KV:', err)
+      }
+    }
+    return fileBlogs
+  } catch (error) {
+    console.error('Failed to read blogs from file system:', error)
+    return []
+  }
 }
 
 export function writeBlogs(blogs: BlogRecord[]) {

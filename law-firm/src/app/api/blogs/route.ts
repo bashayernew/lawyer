@@ -4,31 +4,41 @@ import { BlogRecord, Locale, readBlogs, readBlogsAsync, writeBlogsAsync } from '
 import { isAuthorized } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
-  const locale = searchParams.get('locale') as Locale | null
-  const published = searchParams.get('published')
-  const sector = searchParams.get('sector') as 'insights' | 'updates' | 'media' | null
+  try {
+    const { searchParams } = new URL(request.url)
+    const locale = searchParams.get('locale') as Locale | null
+    const published = searchParams.get('published')
+    const sector = searchParams.get('sector') as 'insights' | 'updates' | 'media' | null
 
-  // Use async read to support KV storage
-  let blogs = await readBlogsAsync()
+    // Use async read to support KV storage
+    let blogs = await readBlogsAsync()
+    console.log(`[API] Total blogs loaded: ${blogs.length}`)
 
-  if (locale) {
-    blogs = blogs.filter((blog) => blog.locale === locale)
+    if (locale) {
+      blogs = blogs.filter((blog) => blog.locale === locale)
+      console.log(`[API] After locale filter (${locale}): ${blogs.length}`)
+    }
+
+    if (published === 'true') {
+      const beforeCount = blogs.length
+      blogs = blogs.filter((blog) => blog.published === true)
+      console.log(`[API] After published filter: ${beforeCount} -> ${blogs.length}`)
+    }
+
+    if (sector) {
+      blogs = blogs.filter((blog) => blog.sectors && blog.sectors.includes(sector))
+      console.log(`[API] After sector filter (${sector}): ${blogs.length}`)
+    }
+
+    blogs.sort(
+      (a, b) => new Date(b.date || b.createdAt).getTime() - new Date(a.date || a.createdAt).getTime()
+    )
+
+    return NextResponse.json(blogs)
+  } catch (error: any) {
+    console.error('[API] Error in GET /api/blogs:', error)
+    return NextResponse.json({ error: 'Failed to fetch blogs' }, { status: 500 })
   }
-
-  if (published === 'true') {
-    blogs = blogs.filter((blog) => blog.published)
-  }
-
-  if (sector) {
-    blogs = blogs.filter((blog) => blog.sectors && blog.sectors.includes(sector))
-  }
-
-  blogs.sort(
-    (a, b) => new Date(b.date || b.createdAt).getTime() - new Date(a.date || a.createdAt).getTime()
-  )
-
-  return NextResponse.json(blogs)
 }
 
 export async function POST(request: NextRequest) {
@@ -45,7 +55,8 @@ export async function POST(request: NextRequest) {
     }
 
     const now = new Date().toISOString()
-    const blogs = readBlogs()
+    // Use async read to get blogs from KV in production
+    const blogs = await readBlogsAsync()
 
     const newBlog: BlogRecord = {
       id: Date.now().toString(),

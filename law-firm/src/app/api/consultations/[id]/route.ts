@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import {
   ConsultationRecord,
-  readConsultations,
-  writeConsultations
+  readConsultationsAsync,
+  writeConsultationsAsync
 } from '@/lib/consultations'
 import { isAuthorized } from '@/lib/auth'
 
@@ -11,8 +11,12 @@ function unauthorized() {
   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 }
 
+function kvConfigured() {
+  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
+}
+
 async function requireConsultations() {
-  const consultations = await readConsultations()
+  const consultations = await readConsultationsAsync()
   return consultations
 }
 
@@ -25,6 +29,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   if (!checkAuth(req)) return unauthorized()
+  if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+    return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+  }
 
   const consultations = await requireConsultations()
   const consultation = consultations.find((record) => record.id === params.id)
@@ -43,6 +50,9 @@ export async function PUT(
   if (!checkAuth(req)) return unauthorized()
 
   try {
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
     const body = await req.json()
     const consultations = await requireConsultations()
     const index = consultations.findIndex((record) => record.id === params.id)
@@ -60,7 +70,7 @@ export async function PUT(
     }
 
     consultations[index] = updated
-    await writeConsultations(consultations)
+    await writeConsultationsAsync(consultations)
 
     return NextResponse.json(consultations[index])
   } catch (error) {
@@ -74,6 +84,9 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   if (!checkAuth(req)) return unauthorized()
+  if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+    return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+  }
 
   const consultations = await requireConsultations()
   const filtered = consultations.filter((record) => record.id !== params.id)
@@ -82,7 +95,7 @@ export async function DELETE(
     return NextResponse.json({ error: 'Consultation not found' }, { status: 404 })
   }
 
-  await writeConsultations(filtered)
+  await writeConsultationsAsync(filtered)
 
   return NextResponse.json({ ok: true })
 }

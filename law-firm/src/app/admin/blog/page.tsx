@@ -153,6 +153,10 @@ export default function AdminBlogListPage() {
     return null
   }
 
+  const handleRowClick = (id: string) => {
+    router.push(`/admin/blog/${id}`)
+  }
+
   return (
     <div className="min-h-screen bg-neutral-50 p-8">
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
@@ -221,9 +225,19 @@ export default function AdminBlogListPage() {
               </thead>
               <tbody className="divide-y divide-neutral-100 text-neutral-700">
                 {blogs.map((blog) => (
-                  <tr key={blog.id} className="hover:bg-neutral-50">
+                  <tr
+                    key={blog.id}
+                    className="hover:bg-neutral-50 cursor-pointer"
+                    onClick={() => handleRowClick(blog.id)}
+                  >
                     <td className="px-4 py-4">
-                      <div className="font-medium text-primary">{blog.title.en}</div>
+                      <Link
+                        href={`/admin/blog/${blog.id}`}
+                        className="font-medium text-primary hover:underline"
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        {blog.title.en}
+                      </Link>
                       <div className="text-xs text-neutral-500 line-clamp-2">{blog.summary.en}</div>
                     </td>
                     <td className="px-4 py-4 font-medium uppercase">{blog.locale}</td>
@@ -242,7 +256,10 @@ export default function AdminBlogListPage() {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           type="button"
-                          onClick={() => togglePublish(blog)}
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            togglePublish(blog)
+                          }}
                           className="btn btn-light flex items-center gap-1"
                         >
                           {blog.status === 'published' ? 'Unpublish' : 'Publish'}
@@ -250,12 +267,16 @@ export default function AdminBlogListPage() {
                         <Link
                           href={`/admin/blog/${blog.id}`}
                           className="btn btn-primary flex items-center gap-1"
+                          onClick={(event) => event.stopPropagation()}
                         >
                           <PenSquare className="h-4 w-4" /> Edit
                         </Link>
                         <button
                           type="button"
-                          onClick={() => deleteBlog(blog.id)}
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            deleteBlog(blog.id)
+                          }}
                           className="btn bg-red-500 text-white hover:bg-red-600"
                         >
                           <Trash2 className="h-4 w-4" />

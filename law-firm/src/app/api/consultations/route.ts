@@ -3,14 +3,18 @@ import nodemailer from 'nodemailer'
 
 import {
   ConsultationRecord,
-  readConsultations,
-  writeConsultations
+  readConsultationsAsync,
+  writeConsultationsAsync
 } from '@/lib/consultations'
 
 import { isAuthorized } from '@/lib/auth'
 
 function unauthorized() {
   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+}
+
+function kvConfigured() {
+  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
 }
 
 async function sendEmailNotification(consultation: ConsultationRecord) {
@@ -75,7 +79,11 @@ export async function GET(req: NextRequest) {
     return unauthorized()
   }
 
-  const consultations = await readConsultations()
+  if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+    return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+  }
+
+  const consultations = await readConsultationsAsync()
   consultations.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   )
@@ -85,6 +93,10 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
+
     const body = await req.json()
     const { name, email, phone, message, locale, preferredDate } = body
 
@@ -92,7 +104,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const consultations = await readConsultations()
+    const consultations = await readConsultationsAsync()
     const now = new Date().toISOString()
     const newConsultation: ConsultationRecord = {
       id: Date.now().toString(),
@@ -108,7 +120,7 @@ export async function POST(req: NextRequest) {
     }
 
     consultations.push(newConsultation)
-    await writeConsultations(consultations)
+    await writeConsultationsAsync(consultations)
 
     // Send email notification (non-blocking)
     sendEmailNotification(newConsultation).catch(err => 

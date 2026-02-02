@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { readUsers } from '@/lib/users'
+import { readUsersAsync } from '@/lib/users'
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email/username and password are required' }, { status: 400 })
     }
 
-    const users = readUsers()
+    const users = await readUsersAsync()
     const emailOrUsername = email.toLowerCase().trim()
     
     // Check if user exists by email or name (username) and credentials match

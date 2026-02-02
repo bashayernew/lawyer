@@ -108,4 +108,3 @@ export async function writeConsultationsAsync(records: ConsultationRecord[]) {
 
   await writeConsultations(records)
 }
-

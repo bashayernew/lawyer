@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { UserRecord, readUsers, writeUsers } from '@/lib/users'
+import { UserRecord, readUsersAsync, writeUsersAsync } from '@/lib/users'
 import { isAuthorized } from '@/lib/auth'
+
+function kvConfigured() {
+  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
+}
 
 export async function GET(
   request: NextRequest,
@@ -11,8 +15,12 @@ export async function GET(
   }
 
   try {
-    const users = readUsers()
-    const user = users.find((u) => u.id === params.id)
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
+    const users = await readUsersAsync()
+    const normalizedId = String(params.id)
+    const user = users.find((u) => String(u.id) === normalizedId)
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
@@ -36,11 +44,15 @@ export async function PUT(
   }
 
   try {
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
     const body = await request.json()
     const { name, email, password, role, active } = body
 
-    const users = readUsers()
-    const index = users.findIndex((u) => u.id === params.id)
+    const users = await readUsersAsync()
+    const normalizedId = String(params.id)
+    const index = users.findIndex((u) => String(u.id) === normalizedId)
 
     if (index === -1) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
@@ -64,7 +76,7 @@ export async function PUT(
       updatedAt: new Date().toISOString()
     }
 
-    writeUsers(users)
+    await writeUsersAsync(users)
 
     // Return user without password
     const { password: _, ...userWithoutPassword } = users[index]
@@ -84,14 +96,18 @@ export async function DELETE(
   }
 
   try {
-    const users = readUsers()
-    const filtered = users.filter((u) => u.id !== params.id)
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
+    const users = await readUsersAsync()
+    const normalizedId = String(params.id)
+    const filtered = users.filter((u) => String(u.id) !== normalizedId)
 
     if (users.length === filtered.length) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
-    writeUsers(filtered)
+    await writeUsersAsync(filtered)
     return NextResponse.json({ success: true })
   } catch (error: any) {
     console.error('Failed to delete user:', error)

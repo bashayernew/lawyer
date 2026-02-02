@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { UserRecord, readUsers, writeUsers } from '@/lib/users'
+import { UserRecord, readUsersAsync, writeUsersAsync } from '@/lib/users'
 import { isAuthorized } from '@/lib/auth'
+
+function kvConfigured() {
+  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
+}
 
 export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) {
@@ -8,7 +12,11 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const users = readUsers()
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
+
+    const users = await readUsersAsync()
     // Don't send passwords in the response
     const usersWithoutPasswords = users.map(({ password, ...user }) => user)
     return NextResponse.json(usersWithoutPasswords)
@@ -24,6 +32,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
     const body = await request.json()
     const { name, email, password, role, active } = body
 
@@ -31,7 +42,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const users = readUsers()
+    const users = await readUsersAsync()
     
     // Check if email already exists
     if (users.some((u) => u.email === email)) {
@@ -51,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     users.push(newUser)
-    writeUsers(users)
+    await writeUsersAsync(users)
 
     // Return user without password
     const { password: _, ...userWithoutPassword } = newUser

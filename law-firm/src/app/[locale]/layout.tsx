@@ -26,9 +26,13 @@ export const metadata: Metadata = {
   }
 }
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 type Params = { params: { locale: 'en' | 'ar' } }
 
 export default async function LocaleLayout({ children, params }: Readonly<{ children: React.ReactNode } & Params>) {
+  console.log('DEPLOY_COMMIT_LOCALE_LAYOUT:', process.env.VERCEL_GIT_COMMIT_SHA)
   const { locale } = params
   const messages = (await import(`@/content/${locale}.json`).catch(() => null))?.default
   if (!messages) return notFound()

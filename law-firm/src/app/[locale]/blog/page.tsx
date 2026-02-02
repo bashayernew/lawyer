@@ -8,6 +8,10 @@ import { BookOpen, Filter } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+function shouldUsePlainImg(url: string) {
+  return url.includes('.public.blob.vercel-storage.com')
+}
+
 type Blog = {
   id: string
   title: { en: string; ar: string }
@@ -172,12 +176,22 @@ export default function BlogPage({ params: { locale } }: { params: { locale: 'en
             >
               {blog.image && (
                 <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
-                  <Image
-                    src={blog.image}
-                    alt={blog.title[locale] || blog.title.en}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                  {shouldUsePlainImg(blog.image) ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={blog.image}
+                      alt={blog.title[locale] || blog.title.en}
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <Image
+                      src={blog.image}
+                      alt={blog.title[locale] || blog.title.en}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      unoptimized
+                    />
+                  )}
                 </div>
               )}
               <div className="mb-3">

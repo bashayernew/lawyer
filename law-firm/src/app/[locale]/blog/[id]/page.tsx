@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { ArrowLeft, Calendar } from 'lucide-react'
 import { readBlogsAsync } from '@/lib/blogs'
 
+export const dynamic = 'force-dynamic'
+
 async function getBlog(id: string) {
   try {
     const blogs = await readBlogsAsync()

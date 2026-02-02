@@ -4,6 +4,8 @@ import BlogSectionDropdown from '@/components/BlogSectionDropdown'
 import Link from 'next/link'
 import { readTeamAsync } from '@/lib/team'
 
+export const dynamic = 'force-dynamic'
+
 export default async function TeamPage({ params: { locale } }: { params: { locale: 'en' | 'ar' } }) {
   const content = (await import(`@/content/${locale}.json`)).default
   const storedMembers = await readTeamAsync()

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { headers } from 'next/headers'
 import { ArrowLeft, Calendar, Tag } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
@@ -15,7 +16,17 @@ function shouldUsePlainImg(url: string) {
 
 async function getBlog(id: string) {
   try {
-    const res = await fetch(`/api/blogs/${encodeURIComponent(String(id))}`, {
+    const headerList = headers()
+    const host =
+      headerList.get('x-forwarded-host') ||
+      headerList.get('host') ||
+      process.env.VERCEL_URL
+    const proto = headerList.get('x-forwarded-proto') || (process.env.VERCEL_URL ? 'https' : 'http')
+    const baseUrl = host ? `${proto}://${host}` : ''
+    const url = baseUrl
+      ? `${baseUrl}/api/blogs/${encodeURIComponent(String(id))}`
+      : `/api/blogs/${encodeURIComponent(String(id))}`
+    const res = await fetch(url, {
       cache: 'no-store'
     })
     if (!res.ok) {

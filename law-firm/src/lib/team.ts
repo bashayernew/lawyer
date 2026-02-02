@@ -13,22 +13,20 @@ export type TeamMemberRecord = {
 }
 
 const TEAM_FILE = join(process.cwd(), 'src', 'data', 'team.json')
-const KV_TEAM_KEY = 'team:all'
+const KV_TEAM_INDEX_KEY = 'team:index'
+const KV_TEAM_PREFIX = 'team:'
 
 async function readTeamFromKV(): Promise<TeamMemberRecord[] | null> {
   try {
     if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
-      let members = await kv.get<TeamMemberRecord[]>(KV_TEAM_KEY)
-
-      if (!members || members.length === 0) {
-        const fileMembers = readTeam()
-        if (fileMembers.length > 0) {
-          await kv.set(KV_TEAM_KEY, fileMembers)
-          members = fileMembers
-        }
+      const ids = (await kv.get<string[]>(KV_TEAM_INDEX_KEY)) || []
+      if (ids.length === 0) {
+        return []
       }
 
-      return members || []
+      const keys = ids.map((id) => `${KV_TEAM_PREFIX}${id}`)
+      const records = await kv.mget<TeamMemberRecord[]>(...keys)
+      return records.filter(Boolean) as TeamMemberRecord[]
     }
   } catch (error) {
     console.error('Failed to read team from KV:', error)
@@ -36,16 +34,21 @@ async function readTeamFromKV(): Promise<TeamMemberRecord[] | null> {
   return null
 }
 
-async function writeTeamToKV(members: TeamMemberRecord[]): Promise<boolean> {
+async function writeTeamToKV(members: TeamMemberRecord[]): Promise<void> {
   try {
     if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
-      await kv.set(KV_TEAM_KEY, members)
-      return true
+      const ids = members.map((member) => member.id)
+      await kv.set(KV_TEAM_INDEX_KEY, ids)
+
+      await Promise.all(
+        members.map((member) => kv.set(`${KV_TEAM_PREFIX}${member.id}`, member))
+      )
+      return
     }
   } catch (error) {
     console.error('Failed to write team to KV:', error)
   }
-  return false
+  throw new Error('KV not configured')
 }
 
 export function readTeam(): TeamMemberRecord[] {
@@ -77,7 +80,7 @@ export async function readTeamAsync(): Promise<TeamMemberRecord[]> {
     const fileMembers = readTeam()
     if (fileMembers.length > 0 && process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
       try {
-        await kv.set(KV_TEAM_KEY, fileMembers)
+        await writeTeamToKV(fileMembers)
       } catch (err) {
         console.error('Failed to migrate team to KV:', err)
       }
@@ -90,10 +93,17 @@ export async function readTeamAsync(): Promise<TeamMemberRecord[]> {
 }
 
 export async function writeTeamAsync(members: TeamMemberRecord[]): Promise<void> {
-  const kvWritten = await writeTeamToKV(members)
-  if (!kvWritten) {
-    writeTeam(members)
-  } else {
-    writeTeam(members)
+  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    await writeTeamToKV(members)
+    if (process.env.NODE_ENV !== 'production') {
+      writeTeam(members)
+    }
+    return
   }
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('KV not configured')
+  }
+
+  writeTeam(members)
 }

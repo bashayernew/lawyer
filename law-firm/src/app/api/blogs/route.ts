@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { BlogRecord, Locale, readBlogs, readBlogsAsync, writeBlogsAsync } from '@/lib/blogs'
+import { BlogRecord, Locale, readBlogsAsync, writeBlogsAsync } from '@/lib/blogs'
 import { isAuthorized } from '@/lib/auth'
+
+function kvConfigured() {
+  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
+}
 
 export async function GET(request: NextRequest) {
   try {
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
     const { searchParams } = new URL(request.url)
     const locale = searchParams.get('locale') as Locale | null
     const published = searchParams.get('published')
@@ -21,7 +28,7 @@ export async function GET(request: NextRequest) {
 
     if (published === 'true') {
       const beforeCount = blogs.length
-      blogs = blogs.filter((blog) => blog.published === true)
+      blogs = blogs.filter((blog) => blog.status === 'published')
       console.log(`[API] After published filter: ${beforeCount} -> ${blogs.length}`)
     }
 
@@ -47,8 +54,11 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ message: 'KV not configured' }, { status: 500 })
+    }
     const body = await request.json()
-    const { title, summary, content, image, links, locale, published, sectors, date } = body
+    const { title, summary, content, image, links, locale, published, status, sectors, date } = body
 
     if (!title?.en || !title?.ar || !summary?.en || !summary?.ar || !content?.en || !content?.ar) {
       return NextResponse.json({ message: 'Missing required bilingual fields' }, { status: 400 })
@@ -58,6 +68,12 @@ export async function POST(request: NextRequest) {
     // Use async read to get blogs from KV in production
     const blogs = await readBlogsAsync()
 
+    const nextStatus = status === 'published' || status === 'draft'
+      ? status
+      : published
+        ? 'published'
+        : 'draft'
+
     const newBlog: BlogRecord = {
       id: Date.now().toString(),
       title,
@@ -66,7 +82,7 @@ export async function POST(request: NextRequest) {
       image: image || null,
       links: Array.isArray(links) ? links : [],
       locale: (locale as Locale) || 'en',
-      published: Boolean(published),
+      status: nextStatus,
       sectors: Array.isArray(sectors) && sectors.length > 0 ? sectors : undefined,
       date: date || now,
       createdAt: now,

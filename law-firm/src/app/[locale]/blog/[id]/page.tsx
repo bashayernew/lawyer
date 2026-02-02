@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowLeft, Calendar } from 'lucide-react'
-import { readBlogs } from '@/lib/blogs'
+import { readBlogsAsync } from '@/lib/blogs'
 
 async function getBlog(id: string) {
   try {
-    const blogs = readBlogs()
+    const blogs = await readBlogsAsync()
     return blogs.find(blog => blog.id === id) || null
   } catch (error) {
     console.error('Error fetching blog:', error)
@@ -21,7 +21,7 @@ export default async function BlogPostPage({
   const blog = await getBlog(id)
   const isAr = locale === 'ar'
 
-  if (!blog || (!blog.published && process.env.NODE_ENV === 'production')) {
+  if (!blog || (blog.status !== 'published' && process.env.NODE_ENV === 'production')) {
     return (
       <main className="container py-16 md:py-24 text-center">
         <h1 className="text-2xl font-bold text-white mb-4">

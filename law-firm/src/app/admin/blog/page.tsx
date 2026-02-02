@@ -10,7 +10,7 @@ type BlogRecord = {
   title: { en: string; ar: string }
   summary: { en: string; ar: string }
   locale: 'en' | 'ar'
-  published: boolean
+  status: 'draft' | 'published'
   date: string
   createdAt?: string
   updatedAt?: string
@@ -106,13 +106,14 @@ export default function AdminBlogListPage() {
     try {
       setError(null)
       const url = baseUrl ? `${baseUrl}/api/blogs/${blog.id}` : `/api/blogs/${blog.id}`
+      const nextStatus = blog.status === 'published' ? 'draft' : 'published'
       const res = await fetch(url, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'x-admin-secret': adminSecret
         },
-        body: JSON.stringify({ published: !blog.published })
+        body: JSON.stringify({ status: nextStatus })
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
@@ -228,10 +229,10 @@ export default function AdminBlogListPage() {
                     <td className="px-4 py-4 font-medium uppercase">{blog.locale}</td>
                     <td className="px-4 py-4">
                       <span className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${
-                        blog.published ? 'bg-emerald-100 text-emerald-700' : 'bg-neutral-200 text-neutral-600'
+                        blog.status === 'published' ? 'bg-emerald-100 text-emerald-700' : 'bg-neutral-200 text-neutral-600'
                       }`}>
-                        {blog.published ? <ToggleRight className="h-4 w-4" /> : <ToggleLeft className="h-4 w-4" />}
-                        {blog.published ? 'Published' : 'Draft'}
+                        {blog.status === 'published' ? <ToggleRight className="h-4 w-4" /> : <ToggleLeft className="h-4 w-4" />}
+                        {blog.status === 'published' ? 'Published' : 'Draft'}
                       </span>
                     </td>
                     <td className="px-4 py-4 text-sm text-neutral-500">
@@ -244,7 +245,7 @@ export default function AdminBlogListPage() {
                           onClick={() => togglePublish(blog)}
                           className="btn btn-light flex items-center gap-1"
                         >
-                          {blog.published ? 'Unpublish' : 'Publish'}
+                          {blog.status === 'published' ? 'Unpublish' : 'Publish'}
                         </button>
                         <Link
                           href={`/admin/blog/${blog.id}`}

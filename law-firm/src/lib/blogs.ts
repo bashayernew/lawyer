@@ -5,6 +5,7 @@ import { kv } from '@vercel/kv'
 export type Locale = 'en' | 'ar'
 
 export type BlogSector = 'insights' | 'updates' | 'media'
+export type BlogStatus = 'draft' | 'published'
 
 export type BlogRecord = {
   id: string
@@ -14,32 +15,44 @@ export type BlogRecord = {
   image?: string | null
   links?: Array<{ text: Record<Locale, string>; url: string }>
   locale: Locale
-  published: boolean
+  status: BlogStatus
   sectors?: BlogSector[] // Array of sectors this blog belongs to
   date: string
   createdAt: string
   updatedAt: string
+  // Backward compatibility for old records
+  published?: boolean
 }
 
 const BLOGS_FILE = join(process.cwd(), 'src', 'data', 'blogs.json')
-const KV_BLOGS_KEY = 'blogs:all'
+const KV_BLOG_INDEX_KEY = 'blogs:index'
+const KV_BLOG_PREFIX = 'blog:'
 
-// Try to use Vercel KV, fallback to file system for local development
+function normalizeBlog(record: any): BlogRecord {
+  const status: BlogStatus =
+    record?.status === 'published' || record?.status === 'draft'
+      ? record.status
+      : record?.published === true
+        ? 'published'
+        : 'draft'
+
+  return {
+    ...record,
+    status
+  }
+}
+
 async function readBlogsFromKV(): Promise<BlogRecord[] | null> {
   try {
     if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
-      let blogs = await kv.get<BlogRecord[]>(KV_BLOGS_KEY)
-      
-      // If KV is empty but file system has blogs, migrate them
-      if (!blogs || blogs.length === 0) {
-        const fileBlogs = readBlogs()
-        if (fileBlogs.length > 0) {
-          await kv.set(KV_BLOGS_KEY, fileBlogs)
-          blogs = fileBlogs
-        }
+      const ids = (await kv.get<string[]>(KV_BLOG_INDEX_KEY)) || []
+      if (ids.length === 0) {
+        return []
       }
-      
-      return blogs || []
+
+      const keys = ids.map((id) => `${KV_BLOG_PREFIX}${id}`)
+      const records = await kv.mget<BlogRecord[]>(...keys)
+      return records.filter(Boolean).map(normalizeBlog)
     }
   } catch (error) {
     console.error('Failed to read blogs from KV:', error)
@@ -47,16 +60,22 @@ async function readBlogsFromKV(): Promise<BlogRecord[] | null> {
   return null
 }
 
-async function writeBlogsToKV(blogs: BlogRecord[]): Promise<boolean> {
+async function writeBlogsToKV(blogs: BlogRecord[]): Promise<void> {
   try {
     if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
-      await kv.set(KV_BLOGS_KEY, blogs)
-      return true
+      const normalized = blogs.map(normalizeBlog)
+      const ids = normalized.map((blog) => blog.id)
+      await kv.set(KV_BLOG_INDEX_KEY, ids)
+
+      await Promise.all(
+        normalized.map((blog) => kv.set(`${KV_BLOG_PREFIX}${blog.id}`, blog))
+      )
+      return
     }
   } catch (error) {
     console.error('Failed to write blogs to KV:', error)
   }
-  return false
+  throw new Error('KV not configured')
 }
 
 export function readBlogs(): BlogRecord[] {
@@ -64,7 +83,7 @@ export function readBlogs(): BlogRecord[] {
   // So we'll use file system and sync with KV in API routes
   try {
     const data = readFileSync(BLOGS_FILE, 'utf-8')
-    return JSON.parse(data)
+    return JSON.parse(data).map(normalizeBlog)
   } catch (error) {
     console.error('Failed to read blogs file:', error)
     return []
@@ -84,7 +103,7 @@ export async function readBlogsAsync(): Promise<BlogRecord[]> {
     // If we have file blogs but KV is empty, try to migrate
     if (fileBlogs.length > 0 && process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
       try {
-        await kv.set(KV_BLOGS_KEY, fileBlogs)
+        await writeBlogsToKV(fileBlogs)
         console.log(`Migrated ${fileBlogs.length} blogs from file system to KV`)
       } catch (err) {
         console.error('Failed to migrate blogs to KV:', err)
@@ -107,14 +126,19 @@ export function writeBlogs(blogs: BlogRecord[]) {
 }
 
 export async function writeBlogsAsync(blogs: BlogRecord[]): Promise<void> {
-  // Write to both KV (for production) and file system (for local dev)
-  const kvWritten = await writeBlogsToKV(blogs)
-  if (!kvWritten) {
-    // Fallback to file system if KV is not available
-    writeBlogs(blogs)
-  } else {
-    // Also write to file system for backup
-    writeBlogs(blogs)
+  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    await writeBlogsToKV(blogs)
+    // Also write to file system for backup in dev
+    if (process.env.NODE_ENV !== 'production') {
+      writeBlogs(blogs)
+    }
+    return
   }
+
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('KV not configured')
+  }
+
+  writeBlogs(blogs)
 }
 

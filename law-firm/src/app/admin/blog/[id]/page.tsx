@@ -75,7 +75,7 @@ export default function EditBlogPostPage() {
       setContentAr(blog.content?.ar ?? '')
       setImage(blog.image ?? '')
       setLocale(blog.locale ?? 'en')
-      setPublished(Boolean(blog.published))
+      setPublished(blog.status === 'published')
       setSectors(Array.isArray(blog.sectors) ? blog.sectors : [])
       setLinks(
         blog.links && blog.links.length
@@ -119,7 +119,7 @@ export default function EditBlogPostPage() {
           url: item.url
         })),
       locale,
-      published,
+      status: published ? 'published' : 'draft',
       sectors: sectors,
       date: new Date().toISOString()
     }

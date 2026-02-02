@@ -215,7 +215,7 @@ export default function NewBlogPostPage() {
           url: item.url
         })),
       locale,
-      published,
+      status: published ? 'published' : 'draft',
       sectors: sectors,
       date: new Date().toISOString()
     }

@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
-import { writeFile } from 'fs/promises'
-import { join } from 'path'
-import { existsSync, mkdirSync } from 'fs'
 import { isAuthorized } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
@@ -36,31 +33,18 @@ export async function POST(request: NextRequest) {
     const extension = file.name.split('.').pop() || 'jpg'
     const filename = `blog-${timestamp}.${extension}`
 
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
-      const { url } = await put(`uploads/blogs/${filename}`, buffer, {
-        access: 'public',
-        contentType: file.type
-      })
-      return NextResponse.json({ url }, { status: 200 })
-    }
-
-    if (process.env.NODE_ENV === 'production') {
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
       return NextResponse.json(
         { message: 'Vercel Blob not configured. Set up Blob storage to enable uploads.' },
         { status: 500 }
       )
     }
 
-    // Local fallback for development (Vercel production FS is read-only)
-    const uploadsDir = join(process.cwd(), 'public', 'uploads', 'blogs')
-    if (!existsSync(uploadsDir)) {
-      mkdirSync(uploadsDir, { recursive: true })
-    }
-
-    const filepath = join(uploadsDir, filename)
-    await writeFile(filepath, buffer)
-
-    const url = `/uploads/blogs/${filename}`
+    // Store in Vercel Blob for production-safe uploads
+    const { url } = await put(`uploads/blogs/${filename}`, buffer, {
+      access: 'public',
+      contentType: file.type
+    })
     return NextResponse.json({ url }, { status: 200 })
   } catch (error: any) {
     console.error('Upload error:', error)

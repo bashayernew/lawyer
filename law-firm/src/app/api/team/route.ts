@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { isAuthorized } from '@/lib/auth'
 import { readTeamAsync, writeTeamAsync, TeamMemberRecord } from '@/lib/team'
 
+function kvConfigured() {
+  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
+}
+
 function unauthorized() {
   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 }
@@ -12,6 +16,9 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
     const members = await readTeamAsync()
     return NextResponse.json(members)
   } catch (error: any) {
@@ -26,6 +33,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
+    }
     const body = await request.json()
     const { name, role, description, image } = body
 

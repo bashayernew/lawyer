@@ -3,10 +3,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { BlogRecord, Locale, readBlogsAsync, writeBlogsAsync } from '@/lib/blogs'
 import { isAuthorized } from '@/lib/auth'
 
+function kvConfigured() {
+  return Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN)
+}
+
 export async function GET(
   _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+    return NextResponse.json({ message: 'KV not configured' }, { status: 500 })
+  }
   const blogs = await readBlogsAsync()
   const blog = blogs.find((entry) => entry.id === params.id)
 
@@ -26,6 +33,9 @@ export async function PUT(
   }
 
   try {
+    if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+      return NextResponse.json({ message: 'KV not configured' }, { status: 500 })
+    }
     const body = await request.json()
     const blogs = await readBlogsAsync()
     const index = blogs.findIndex((entry) => entry.id === params.id)
@@ -35,6 +45,15 @@ export async function PUT(
     }
 
     const current = blogs[index]
+    const nextStatus =
+      body.status === 'published' || body.status === 'draft'
+        ? body.status
+        : typeof body.published === 'boolean'
+          ? body.published
+            ? 'published'
+            : 'draft'
+          : current.status
+
     const next: BlogRecord = {
       ...current,
       title: body.title ?? current.title,
@@ -43,8 +62,7 @@ export async function PUT(
       image: 'image' in body ? body.image : current.image,
       links: Array.isArray(body.links) ? body.links : current.links,
       locale: (body.locale as Locale) || current.locale,
-      published:
-        typeof body.published === 'boolean' ? body.published : current.published,
+      status: nextStatus,
       sectors: 'sectors' in body 
         ? (Array.isArray(body.sectors) && body.sectors.length > 0 ? body.sectors : undefined)
         : current.sectors,
@@ -70,6 +88,9 @@ export async function DELETE(
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
 
+  if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
+    return NextResponse.json({ message: 'KV not configured' }, { status: 500 })
+  }
   const blogs = await readBlogsAsync()
   const remaining = blogs.filter((entry) => entry.id !== params.id)
 

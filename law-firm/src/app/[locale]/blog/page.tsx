@@ -7,6 +7,7 @@ import { BookOpen, Filter } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+console.log('BLOG_DEPLOY_COMMIT:', process.env.VERCEL_GIT_COMMIT_SHA)
 
 function shouldUsePlainImg(url: string) {
   return url.includes('.public.blob.vercel-storage.com')

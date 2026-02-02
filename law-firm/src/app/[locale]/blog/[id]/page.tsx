@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { headers } from 'next/headers'
-import { ArrowLeft, Calendar } from 'lucide-react'
+import { ArrowLeft, Calendar, Tag } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -14,23 +13,9 @@ function shouldUsePlainImg(url: string) {
   return url.includes('.public.blob.vercel-storage.com')
 }
 
-function getBaseUrl() {
-  const headerList = headers()
-  const host = headerList.get('host')
-  const protocol = host?.includes('localhost') ? 'http' : 'https'
-  if (host) {
-    return `${protocol}://${host}`
-  }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`
-  }
-  return ''
-}
-
 async function getBlog(id: string) {
   try {
-    const baseUrl = getBaseUrl()
-    const res = await fetch(`${baseUrl}/api/blogs/${encodeURIComponent(String(id))}`, {
+    const res = await fetch(`/api/blogs/${encodeURIComponent(String(id))}`, {
       cache: 'no-store'
     })
     if (!res.ok) {
@@ -48,7 +33,7 @@ export default async function BlogPostPage({
 }: {
   params: { locale: 'en' | 'ar'; id: string }
 }) {
-  const blog = await getBlog(id)
+  const blog = await getBlog(String(id))
   const isAr = locale === 'ar'
 
   if (!blog || (blog.status !== 'published' && process.env.NODE_ENV === 'production')) {
@@ -112,6 +97,19 @@ export default async function BlogPostPage({
             })}
           </time>
         </div>
+        {Array.isArray(blog.sectors) && blog.sectors.length > 0 && (
+          <div className="mb-4 flex flex-wrap gap-2">
+            {blog.sectors.map((sector: string) => (
+              <span
+                key={sector}
+                className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary"
+              >
+                <Tag className="h-3 w-3" />
+                {sector}
+              </span>
+            ))}
+          </div>
+        )}
 
         <div className="mb-6">
           <h1 className="text-3xl md:text-4xl font-bold text-ink mb-2">

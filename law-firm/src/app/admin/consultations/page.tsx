@@ -148,7 +148,7 @@ export default function AdminConsultationsPage() {
               Consultations
             </h1>
             <p className="text-neutral-500 text-sm mt-1">
-              Track inbound consultation requests, update their status, and add internal notes.
+              Track inbound consultation requests and update their status.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -248,20 +248,6 @@ export default function AdminConsultationsPage() {
                   </div>
                 </div>
 
-                <div className="mt-5">
-                  <label className="text-sm font-medium text-neutral-600 mb-1 block">
-                    Admin notes
-                  </label>
-                  <textarea
-                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-                    rows={3}
-                    defaultValue={consultation.adminNotes || ''}
-                    onBlur={(event) =>
-                      updateConsultation(consultation.id, { adminNotes: event.target.value })
-                    }
-                    placeholder="Add follow-up notes or next steps…"
-                  />
-                </div>
               </div>
             ))}
           </div>

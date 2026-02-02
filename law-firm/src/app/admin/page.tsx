@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { BookOpen, ClipboardList, FilePlus2, LogOut, Users } from 'lucide-react'
+import { BookOpen, Briefcase, ClipboardList, FilePlus2, LogOut, Users } from 'lucide-react'
 
 const STORAGE_KEY = 'admin_authenticated'
 const USER_STORAGE_KEY = 'admin_user'
@@ -197,6 +197,24 @@ export default function AdminDashboard() {
             </div>
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-purple-600">
               Manage users →
+            </span>
+          </Link>
+
+          <Link
+            href="/admin/team"
+            className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            <div className="flex items-center gap-3">
+              <div className="rounded-xl bg-sky-100 p-3 text-sky-600">
+                <Briefcase className="h-6 w-6" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-primary">Team Management</h2>
+                <p className="text-sm text-neutral-500">Add or remove team profiles shown publicly.</p>
+              </div>
+            </div>
+            <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sky-600">
+              Manage team →
             </span>
           </Link>
         </div>

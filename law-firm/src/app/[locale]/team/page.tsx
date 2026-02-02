@@ -2,10 +2,12 @@ import { Users, Briefcase, Zap, Target, Award, BookOpen, FileText, Video, ArrowR
 import LogoWall from '@/components/LogoWall'
 import BlogSectionDropdown from '@/components/BlogSectionDropdown'
 import Link from 'next/link'
+import { readTeamAsync } from '@/lib/team'
 
 export default async function TeamPage({ params: { locale } }: { params: { locale: 'en' | 'ar' } }) {
   const content = (await import(`@/content/${locale}.json`)).default
-  const members = content.team.members
+  const storedMembers = await readTeamAsync()
+  const members = storedMembers.length > 0 ? storedMembers : content.team.members
   const about = content.about
   const blogSections = content.team.blogSections || []
   const icons = [Zap, Target, Award]
@@ -44,20 +46,28 @@ export default async function TeamPage({ params: { locale } }: { params: { local
                     <Briefcase className="h-5 w-5 text-white mt-0.5 flex-shrink-0" strokeWidth={2} />
                     <h3 className="text-xl font-bold text-white">{m.name}</h3>
                   </div>
-                  <p className="text-base font-semibold text-white/90 mb-4">{m.role}</p>
-                  <ul className="space-y-2.5">
-                    {m.bullets.slice(0, 3).map((b: string, i: number) => (
-                      <li key={i} className="flex items-start gap-3 group/item">
-                        <div className="flex-shrink-0 mt-1.5 relative">
-                          <div className="absolute inset-0 bg-white/20 rounded-full blur-sm"></div>
-                          <div className="relative rounded-full bg-white/20 p-1 border border-white/30">
-                            <CheckCircle2 className="h-3 w-3 text-white" strokeWidth={3} />
+                  <p className="text-base font-semibold text-white/90 mb-4">
+                    {m.role || (isAr ? 'عضو الفريق' : 'Team Member')}
+                  </p>
+                  {Array.isArray(m.bullets) && m.bullets.length > 0 ? (
+                    <ul className="space-y-2.5">
+                      {m.bullets.slice(0, 3).map((b: string, i: number) => (
+                        <li key={i} className="flex items-start gap-3 group/item">
+                          <div className="flex-shrink-0 mt-1.5 relative">
+                            <div className="absolute inset-0 bg-white/20 rounded-full blur-sm"></div>
+                            <div className="relative rounded-full bg-white/20 p-1 border border-white/30">
+                              <CheckCircle2 className="h-3 w-3 text-white" strokeWidth={3} />
+                            </div>
                           </div>
-                        </div>
-                        <span className="text-sm text-white/90 leading-relaxed pt-0.5 font-medium">{b}</span>
-                      </li>
-                    ))}
-                  </ul>
+                          <span className="text-sm text-white/90 leading-relaxed pt-0.5 font-medium">{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : m.description ? (
+                    <p className="text-sm text-white/90 leading-relaxed font-medium">
+                      {m.description}
+                    </p>
+                  ) : null}
                 </div>
               </div>
             </div>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "team-1",
+    "name": "Abdul Rahman Al-Saqlawi",
+    "role": "Executive Director",
+    "description": "Founding member (2013). LLB Ajman University (2007). Board member – Center for International Relations (Kuwaiti Bar) 2019. Chairman – Social Committee (Kuwaiti Lawyers Association) 2017. Dubai Judicial Institute Practical Training (60h, 2012). Specialist in AML/CFT Law 2015. Certified International Arbitrator (Commercial) Geneva 2011.",
+    "image": "/team/abdulrahman.jpg",
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "team-2",
+    "name": "Saleh Al-Saqlawi",
+    "role": "Head of International Relations & Cooperation",
+    "description": "Partner member. LLB University of Sharjah 2015. Master researcher in Public Law (UAE – Sharjah Univ 2019). Specialization in administrative cases (cancellation/compensation/contracts/execution). Practical training for federal courts & prosecutions (UAE 2019).",
+    "image": "/team/saleh.jpg",
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "team-3",
+    "name": "Iman Abdul Rahman Al-Hashash",
+    "role": "Lawyer",
+    "description": "Member of Rekaz. Lawyer in Constitutional & Cassation Court. LLB Ajman University 2014. Specializes in Personal Status, Administrative Law, Medical Liability. Former legal researcher at Ministry of Interior.",
+    "image": "/team/eman.jpg",
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "team-4",
+    "name": "Abdullah Ali Al-Meaaan",
+    "role": "Lawyer",
+    "description": "Former legal researcher – Ministry of Defense. Member – Kuwaiti Jurists Association. Legal trainer preparation course. AML course (Law 106/2013). Bankruptcy law course – Judicial Training Institute (UAE). Course on Union Law No.10/2019 (judicial relations).",
+    "image": "/team/abdullah.jpg",
+    "createdAt": "2025-01-01T00:00:00.000Z",
+    "updatedAt": "2025-01-01T00:00:00.000Z"
+  }
+]

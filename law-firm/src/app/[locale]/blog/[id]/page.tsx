@@ -61,7 +61,10 @@ export default async function BlogPostPage({
   }
 
   return (
-    <main className="container py-16 md:py-24 max-w-4xl">
+    <main
+      className="container py-16 md:py-24 max-w-4xl"
+      dir={isAr ? 'rtl' : 'ltr'}
+    >
       <Link
         href={`/${locale}/blog`}
         className="inline-flex items-center gap-2 text-primary hover:text-forest mb-6 transition-colors"
@@ -122,8 +125,8 @@ export default async function BlogPostPage({
           </div>
         )}
 
-        <div className="mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold text-ink mb-2">
+        <div className={`mb-6 ${isAr ? 'text-right' : 'text-left'}`}>
+          <h1 className="text-3xl md:text-4xl font-bold text-ink mb-2 break-words">
             {blog.title[locale] || blog.title.en}
           </h1>
           {blog.title[locale === 'en' ? 'ar' : 'en'] && (
@@ -133,11 +136,11 @@ export default async function BlogPostPage({
           )}
           {blog.summary && (blog.summary[locale] || blog.summary.en) && (
             <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/10">
-              <p className="text-lg text-neutral-700 leading-relaxed">
+              <p className="text-lg text-neutral-700 leading-relaxed break-words whitespace-pre-wrap">
                 {blog.summary[locale] || blog.summary.en}
               </p>
               {blog.summary[locale === 'en' ? 'ar' : 'en'] && (
-                <p className={`text-base text-neutral-600 mt-3 leading-relaxed ${locale === 'ar' ? 'text-right' : 'text-left'}`}>
+                <p className={`text-base text-neutral-600 mt-3 leading-relaxed break-words whitespace-pre-wrap ${locale === 'ar' ? 'text-right' : 'text-left'}`}>
                   {blog.summary[locale === 'en' ? 'ar' : 'en']}
                 </p>
               )}
@@ -146,7 +149,7 @@ export default async function BlogPostPage({
         </div>
 
         <div
-          className="prose prose-lg max-w-none text-neutral-700 leading-relaxed"
+          className={`prose prose-lg max-w-none text-neutral-700 leading-relaxed break-words whitespace-pre-wrap ${isAr ? 'text-right' : 'text-left'}`}
           dangerouslySetInnerHTML={{ __html: blog.content[locale] || blog.content.en }}
         />
 

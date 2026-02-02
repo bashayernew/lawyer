@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { CalendarClock, CheckCircle2, ClipboardList, Loader2, RefreshCcw, Trash2 } from 'lucide-react'
@@ -44,11 +44,6 @@ export default function AdminConsultationsPage() {
   const [consultations, setConsultations] = useState<Consultation[]>([])
   const router = useRouter()
 
-  const adminSecret = useMemo(
-    () => process.env.NEXT_PUBLIC_ADMIN_SECRET || '',
-    []
-  )
-
   // Use relative URLs - works in both local and production
   const baseUrl = ''
 
@@ -69,9 +64,6 @@ export default function AdminConsultationsPage() {
       setLoading(true)
       setError(null)
       const res = await fetch(`${baseUrl || ''}/api/consultations`, {
-        headers: {
-          'x-admin-secret': adminSecret
-        },
         cache: 'no-store'
       })
 
@@ -95,8 +87,7 @@ export default function AdminConsultationsPage() {
       const res = await fetch(`${baseUrl || ''}/api/consultations/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': adminSecret
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
       })
@@ -118,10 +109,7 @@ export default function AdminConsultationsPage() {
     if (!window.confirm('Delete this consultation request?')) return
     try {
       const res = await fetch(`${baseUrl || ''}/api/consultations/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'x-admin-secret': adminSecret
-        }
+        method: 'DELETE'
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))

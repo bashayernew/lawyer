@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createSessionToken, getSessionCookieName, getSessionTtlMs } from '@/lib/auth'
 import { readUsersAsync } from '@/lib/users'
 
 export async function POST(request: NextRequest) {
@@ -25,12 +26,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid email/username or password' }, { status: 401 })
     }
 
-    // Return user info without password
-    const { password: _, ...userWithoutPassword } = user
-    return NextResponse.json({ 
-      success: true, 
-      user: userWithoutPassword 
+    const token = createSessionToken(user.email)
+    const response = NextResponse.json({
+      success: true,
+      user: (({ password: _password, ...rest }) => rest)(user)
     })
+    response.cookies.set({
+      name: getSessionCookieName(),
+      value: token,
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: Math.floor(getSessionTtlMs() / 1000)
+    })
+    return response
   } catch (error: any) {
     console.error('Login error:', error)
     return NextResponse.json({ error: 'Failed to login' }, { status: 500 })

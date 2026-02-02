@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Users, PlusCircle, Loader2, RefreshCcw, Edit, Trash2, UserPlus } from 'lucide-react'
@@ -27,11 +27,6 @@ export default function AdminUsersPage() {
   const [showAddForm, setShowAddForm] = useState(false)
   const router = useRouter()
 
-  const adminSecret = useMemo(
-    () => process.env.NEXT_PUBLIC_ADMIN_SECRET || '',
-    []
-  )
-
   // Use relative URLs - works in both local and production
   const baseUrl = ''
 
@@ -52,9 +47,6 @@ export default function AdminUsersPage() {
       setError(null)
       const url = baseUrl ? `${baseUrl}/api/users` : '/api/users'
       const res = await fetch(url, {
-        headers: {
-          'x-admin-secret': adminSecret
-        },
         cache: 'no-store'
       })
 
@@ -79,10 +71,7 @@ export default function AdminUsersPage() {
       setError(null)
       const url = baseUrl ? `${baseUrl}/api/users/${id}` : `/api/users/${id}`
       const res = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'x-admin-secret': adminSecret
-        }
+        method: 'DELETE'
       })
 
       if (!res.ok) {
@@ -104,8 +93,7 @@ export default function AdminUsersPage() {
       const res = await fetch(url, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': adminSecret
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ active: !user.active })
       })
@@ -171,17 +159,16 @@ export default function AdminUsersPage() {
           </div>
         )}
 
-        {showAddForm && (
-          <AddUserForm
-            onSuccess={() => {
-              setShowAddForm(false)
-              void fetchUsers()
-            }}
-            onCancel={() => setShowAddForm(false)}
-            adminSecret={adminSecret}
-            baseUrl={baseUrl}
-          />
-        )}
+      {showAddForm && (
+        <AddUserForm
+          onSuccess={() => {
+            setShowAddForm(false)
+            void fetchUsers()
+          }}
+          onCancel={() => setShowAddForm(false)}
+          baseUrl={baseUrl}
+        />
+      )}
 
         {loading ? (
           <div className="flex items-center justify-center py-12">
@@ -268,12 +255,10 @@ export default function AdminUsersPage() {
 function AddUserForm({
   onSuccess,
   onCancel,
-  adminSecret,
   baseUrl
 }: {
   onSuccess: () => void
   onCancel: () => void
-  adminSecret: string
   baseUrl: string
 }) {
   const [name, setName] = useState('')
@@ -294,8 +279,7 @@ function AddUserForm({
       const res = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': adminSecret
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ name, email, password, role, active })
       })

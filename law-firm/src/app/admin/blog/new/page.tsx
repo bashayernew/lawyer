@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, PlusCircle, Save, Trash2 } from 'lucide-react'
@@ -27,11 +27,6 @@ export default function NewBlogPostPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const adminSecret = useMemo(
-    () => process.env.NEXT_PUBLIC_ADMIN_SECRET || '',
-    []
-  )
-
   // Use relative URLs - works in both local and production
   const baseUrl = ''
 
@@ -41,12 +36,7 @@ export default function NewBlogPostPage() {
       router.replace('/admin')
     }
     
-    // Check if admin secret is configured
-    if (!adminSecret) {
-      console.warn('NEXT_PUBLIC_ADMIN_SECRET is not set. Please configure it in Vercel environment variables.')
-      setError('Admin secret not configured. Please set NEXT_PUBLIC_ADMIN_SECRET in Vercel environment variables.')
-    }
-  }, [router, adminSecret])
+  }, [router])
 
   const handleAddLink = () => {
     setLinks((prev) => [...prev, { textEn: '', textAr: '', url: '' }])
@@ -90,9 +80,6 @@ export default function NewBlogPostPage() {
       
       const res = await fetch(url, {
         method: 'POST',
-        headers: {
-          'x-admin-secret': adminSecret
-        },
         body: formData
       })
 
@@ -224,8 +211,7 @@ export default function NewBlogPostPage() {
       const res = await fetch(`${baseUrl || ''}/api/blogs`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': adminSecret
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(newBlog)
       })

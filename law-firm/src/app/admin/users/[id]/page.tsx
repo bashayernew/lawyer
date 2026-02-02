@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { ArrowLeft, Loader2, Save, Trash2, User } from 'lucide-react'
@@ -33,11 +33,6 @@ export default function EditUserPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const adminSecret = useMemo(
-    () => process.env.NEXT_PUBLIC_ADMIN_SECRET || '',
-    []
-  )
-
   // Use relative URLs - works in both local and production
   const baseUrl = ''
 
@@ -58,9 +53,6 @@ export default function EditUserPage() {
     try {
       const url = baseUrl ? `${baseUrl}/api/users/${id}` : `/api/users/${id}`
       const res = await fetch(url, {
-        headers: {
-          'x-admin-secret': adminSecret
-        },
         cache: 'no-store'
       })
       if (!res.ok) {
@@ -104,8 +96,7 @@ export default function EditUserPage() {
       const res = await fetch(url, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': adminSecret
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(updateData)
       })
@@ -132,8 +123,7 @@ export default function EditUserPage() {
     try {
       const url = baseUrl ? `${baseUrl}/api/users/${userId}` : `/api/users/${userId}`
       const res = await fetch(url, {
-        method: 'DELETE',
-        headers: { 'x-admin-secret': adminSecret }
+        method: 'DELETE'
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))

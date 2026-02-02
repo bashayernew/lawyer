@@ -54,13 +54,19 @@ export default function AdminDashboard() {
     }
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem(STORAGE_KEY)
-    localStorage.removeItem(USER_STORAGE_KEY)
-    setIsAuthenticated(false)
-    setEmail('')
-    setPassword('')
-    router.push('/admin')
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+    } catch (error) {
+      console.error('Failed to logout:', error)
+    } finally {
+      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(USER_STORAGE_KEY)
+      setIsAuthenticated(false)
+      setEmail('')
+      setPassword('')
+      router.push('/admin')
+    }
   }
 
   if (!isAuthenticated) {

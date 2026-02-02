@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { ArrowLeft, Loader2, Save, Trash2 } from 'lucide-react'
@@ -31,11 +31,6 @@ export default function EditBlogPostPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const adminSecret = useMemo(
-    () => process.env.NEXT_PUBLIC_ADMIN_SECRET || '',
-    []
-  )
-
   // Use relative URLs - works in both local and production
   const baseUrl = ''
 
@@ -56,9 +51,6 @@ export default function EditBlogPostPage() {
     setError(null)
     try {
       const res = await fetch(`${baseUrl || ''}/api/blogs/${id}`, {
-        headers: {
-          'x-admin-secret': adminSecret
-        },
         cache: 'no-store'
       })
       if (!res.ok) {
@@ -128,8 +120,7 @@ export default function EditBlogPostPage() {
       const res = await fetch(`${baseUrl || ''}/api/blogs/${blogId}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': adminSecret
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(updatedBlog)
       })
@@ -155,8 +146,7 @@ export default function EditBlogPostPage() {
     setError(null)
     try {
       const res = await fetch(`${baseUrl || ''}/api/blogs/${blogId}`, {
-        method: 'DELETE',
-        headers: { 'x-admin-secret': adminSecret }
+        method: 'DELETE'
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({})) as { message?: string }
@@ -213,9 +203,6 @@ export default function EditBlogPostPage() {
       
       const res = await fetch(url, {
         method: 'POST',
-        headers: {
-          'x-admin-secret': adminSecret
-        },
         body: formData
       })
 

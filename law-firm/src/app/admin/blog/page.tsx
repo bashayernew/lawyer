@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, usePathname } from 'next/navigation'
 import { BookOpen, Loader2, PenSquare, PlusCircle, RefreshCcw, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react'
@@ -24,11 +24,6 @@ export default function AdminBlogListPage() {
   const [blogs, setBlogs] = useState<BlogRecord[]>([])
   const router = useRouter()
   const pathname = usePathname()
-
-  const adminSecret = useMemo(
-    () => process.env.NEXT_PUBLIC_ADMIN_SECRET || '',
-    []
-  )
 
   // Use relative URLs - works in both local and production
   const baseUrl = ''
@@ -110,8 +105,7 @@ export default function AdminBlogListPage() {
       const res = await fetch(url, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': adminSecret
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ status: nextStatus })
       })
@@ -133,10 +127,7 @@ export default function AdminBlogListPage() {
       setError(null)
       const url = baseUrl ? `${baseUrl}/api/blogs/${id}` : `/api/blogs/${id}`
       const res = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'x-admin-secret': adminSecret
-        }
+        method: 'DELETE'
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))

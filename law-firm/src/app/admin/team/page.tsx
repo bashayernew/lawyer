@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Loader2, PlusCircle, RefreshCcw, Trash2, Users } from 'lucide-react'
@@ -25,11 +25,6 @@ export default function AdminTeamPage() {
   const [showAddForm, setShowAddForm] = useState(false)
   const router = useRouter()
 
-  const adminSecret = useMemo(
-    () => process.env.NEXT_PUBLIC_ADMIN_SECRET || '',
-    []
-  )
-
   const baseUrl = ''
 
   useEffect(() => {
@@ -49,9 +44,6 @@ export default function AdminTeamPage() {
       setError(null)
       const url = baseUrl ? `${baseUrl}/api/team` : '/api/team'
       const res = await fetch(url, {
-        headers: {
-          'x-admin-secret': adminSecret
-        },
         cache: 'no-store'
       })
 
@@ -76,10 +68,7 @@ export default function AdminTeamPage() {
       setError(null)
       const url = baseUrl ? `${baseUrl}/api/team/${id}` : `/api/team/${id}`
       const res = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'x-admin-secret': adminSecret
-        }
+        method: 'DELETE'
       })
 
       if (!res.ok) {
@@ -149,7 +138,6 @@ export default function AdminTeamPage() {
               void fetchMembers()
             }}
             onCancel={() => setShowAddForm(false)}
-            adminSecret={adminSecret}
             baseUrl={baseUrl}
           />
         )}
@@ -199,12 +187,10 @@ export default function AdminTeamPage() {
 function AddMemberForm({
   onSuccess,
   onCancel,
-  adminSecret,
   baseUrl
 }: {
   onSuccess: () => void
   onCancel: () => void
-  adminSecret: string
   baseUrl: string
 }) {
   const [name, setName] = useState('')
@@ -240,9 +226,6 @@ function AddMemberForm({
       const url = baseUrl ? `${baseUrl}/api/upload` : '/api/upload'
       const res = await fetch(url, {
         method: 'POST',
-        headers: {
-          'x-admin-secret': adminSecret
-        },
         body: formData
       })
 
@@ -301,8 +284,7 @@ function AddMemberForm({
       const res = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'x-admin-secret': adminSecret
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           name,

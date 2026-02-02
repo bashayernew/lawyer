@@ -1,0 +1,13 @@
+---
+description: Vercel-safe Next.js App Router patterns
+alwaysApply: true
+---
+
+# Vercel + Next.js App Router
+
+- Use Vercel KV/Blob for persistence and uploads; never write to filesystem in production.
+- KV-backed pages must be dynamic: `export const dynamic = "force-dynamic"` and `export const revalidate = 0`.
+- `revalidate` must be a number or `false` (never an object).
+- Normalize IDs to strings in routes and KV keys.
+- For blog detail pages, fetch via `/api/...` with `cache: "no-store"` instead of direct KV access in Server Components.
+- Allow Blob URLs in `next.config.js` `images.remotePatterns` when using `next/image`.

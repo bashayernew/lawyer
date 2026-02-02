@@ -29,6 +29,7 @@ const KV_BLOG_INDEX_KEY = 'blogs:index'
 const KV_BLOG_PREFIX = 'blog:'
 
 function normalizeBlog(record: any): BlogRecord {
+  const normalizedId = record?.id !== undefined ? String(record.id) : ''
   const status: BlogStatus =
     record?.status === 'published' || record?.status === 'draft'
       ? record.status
@@ -38,6 +39,7 @@ function normalizeBlog(record: any): BlogRecord {
 
   return {
     ...record,
+    id: normalizedId,
     status
   }
 }

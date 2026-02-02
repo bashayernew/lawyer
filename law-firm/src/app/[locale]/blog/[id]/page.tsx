@@ -4,11 +4,21 @@ import { ArrowLeft, Calendar } from 'lucide-react'
 import { readBlogsAsync } from '@/lib/blogs'
 
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+function isVideoUrl(url: string) {
+  return /\.(mp4|webm|ogg)(\?.*)?$/i.test(url)
+}
+
+function shouldUsePlainImg(url: string) {
+  return url.includes('.public.blob.vercel-storage.com')
+}
 
 async function getBlog(id: string) {
   try {
     const blogs = await readBlogsAsync()
-    return blogs.find(blog => blog.id === id) || null
+    const normalizedId = String(id)
+    return blogs.find(blog => String(blog.id) === normalizedId) || null
   } catch (error) {
     console.error('Error fetching blog:', error)
     return null
@@ -49,12 +59,28 @@ export default async function BlogPostPage({
       <article className="rounded-xl border border-primary/25 bg-white/90 backdrop-blur-md p-8 md:p-12 shadow-sm">
         {blog.image && (
           <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
-            <Image
-              src={blog.image}
-              alt={blog.title[locale] || blog.title.en}
-              fill
-              className="object-cover"
-            />
+            {isVideoUrl(blog.image) ? (
+              <video
+                controls
+                className="h-full w-full object-cover"
+                src={blog.image}
+              />
+            ) : shouldUsePlainImg(blog.image) ? (
+              // Fallback to <img> for Blob URLs
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={blog.image}
+                alt={blog.title[locale] || blog.title.en}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <Image
+                src={blog.image}
+                alt={blog.title[locale] || blog.title.en}
+                fill
+                className="object-cover"
+              />
+            )}
           </div>
         )}
 

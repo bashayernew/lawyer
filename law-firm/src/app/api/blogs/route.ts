@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
         : 'draft'
 
     const newBlog: BlogRecord = {
-      id: Date.now().toString(),
+      id: String(Date.now()),
       title,
       summary,
       content,

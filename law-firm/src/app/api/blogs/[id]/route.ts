@@ -14,8 +14,15 @@ export async function GET(
   if (process.env.NODE_ENV === 'production' && !kvConfigured()) {
     return NextResponse.json({ message: 'KV not configured' }, { status: 500 })
   }
+  const requestedId = params.id
+  const normalizedId = String(requestedId)
   const blogs = await readBlogsAsync()
-  const blog = blogs.find((entry) => entry.id === params.id)
+  const blog = blogs.find((entry) => String(entry.id) === normalizedId)
+  console.log('[API] GET /api/blogs/[id]', {
+    requestedId,
+    normalizedId,
+    found: Boolean(blog)
+  })
 
   if (!blog) {
     return NextResponse.json({ message: 'Blog not found' }, { status: 404 })
@@ -38,7 +45,8 @@ export async function PUT(
     }
     const body = await request.json()
     const blogs = await readBlogsAsync()
-    const index = blogs.findIndex((entry) => entry.id === params.id)
+    const normalizedId = String(params.id)
+    const index = blogs.findIndex((entry) => String(entry.id) === normalizedId)
 
     if (index === -1) {
       return NextResponse.json({ message: 'Blog not found' }, { status: 404 })
@@ -92,7 +100,8 @@ export async function DELETE(
     return NextResponse.json({ message: 'KV not configured' }, { status: 500 })
   }
   const blogs = await readBlogsAsync()
-  const remaining = blogs.filter((entry) => entry.id !== params.id)
+  const normalizedId = String(params.id)
+  const remaining = blogs.filter((entry) => String(entry.id) !== normalizedId)
 
   if (remaining.length === blogs.length) {
     return NextResponse.json({ message: 'Blog not found' }, { status: 404 })

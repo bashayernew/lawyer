@@ -5,6 +5,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { BookOpen, Filter } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 type Blog = {
   id: string
   title: { en: string; ar: string }
@@ -222,7 +225,7 @@ export default function BlogPage({ params: { locale } }: { params: { locale: 'en
                 </div>
               )}
               <Link
-                href={`/${locale}/blog/${blog.id}`}
+                href={`/${locale}/blog/${String(blog.id)}`}
                 className="inline-flex items-center gap-2 text-primary text-sm font-semibold hover:text-forest transition-colors group/link"
               >
                 <span>{isAr ? 'اقرأ المزيد' : 'Read more'}</span>

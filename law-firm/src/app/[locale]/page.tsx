@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { 
   Scale, 
-  Shield, 
   Users, 
   Building2, 
   Target, 
@@ -114,39 +113,6 @@ export default async function HomePage({ params: { locale } }: { params: { local
                   <span className="font-semibold">{messages.home.viewOurServices}</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
                 </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gradient-to-br from-neutral-900/50 via-primary/5 to-neutral-900/50 py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(120,53,15,0.1),transparent_50%)]"></div>
-        <div className="container relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary/30 rounded-xl blur-md"></div>
-                <div className="relative rounded-xl bg-gradient-to-br from-primary/20 to-forest/20 p-3 border-2 border-primary/40">
-                  <Shield className="h-7 w-7 text-primary" strokeWidth={2} />
-                </div>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-                {messages.services.ipSection.title}
-              </h2>
-            </div>
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-forest/30 to-primary/30 rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity"></div>
-              <div className="relative rounded-2xl border-2 border-primary/40 bg-primary/95 backdrop-blur-md p-10 md:p-12 shadow-2xl">
-                <div className="text-lg md:text-xl text-white leading-relaxed mb-8 font-medium">
-                  {messages.services.ipSection.description}
-                </div>
-                <div className="flex justify-center pt-6 border-t-2 border-gradient-to-r from-transparent via-primary/20 to-transparent">
-                  <Link href={`/${locale}/services`} className="btn btn-primary text-base px-10 py-4 flex items-center gap-3 group shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
-                    <span className="font-semibold">{messages.services.learnMore}</span>
-                    <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
-                  </Link>
-                </div>
               </div>
             </div>
           </div>

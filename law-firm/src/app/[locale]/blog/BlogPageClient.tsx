@@ -22,36 +22,34 @@ type Blog = {
   links?: Array<{ text?: { en?: string; ar?: string }; url: string; label?: string }>
 }
 
-type BlogSection = {
+type BlogSectionItem = {
   sector: 'insights' | 'updates' | 'media'
   titleAr: string
   titleEn: string
+  description?: string
 }
 
-export default function BlogPageClient({ locale }: { locale: 'en' | 'ar' }) {
+const defaultSections: BlogSectionItem[] = [
+  { sector: 'insights', titleAr: 'ركاز | دراسات وأبحاث', titleEn: 'Rekaz | Legal Insights' },
+  { sector: 'updates', titleAr: 'ركاز | المستجدات القانونية', titleEn: 'Rekaz | Legal Updates' },
+  { sector: 'media', titleAr: 'ركاز | الإعلام والمحتوى المرئي', titleEn: 'Rekaz | Media & Highlights' }
+]
+
+export default function BlogPageClient({
+  locale,
+  blogSectionsHeading = '',
+  blogSections = []
+}: {
+  locale: 'en' | 'ar'
+  blogSectionsHeading?: string
+  blogSections?: BlogSectionItem[]
+}) {
   const [blogs, setBlogs] = useState<Blog[]>([])
   const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([])
   const [selectedSector, setSelectedSector] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const isAr = locale === 'ar'
-
-  const sections: BlogSection[] = [
-    {
-      sector: 'insights',
-      titleAr: 'ركاز | دراسات وأبحاث',
-      titleEn: 'Rikaz | Legal Insights'
-    },
-    {
-      sector: 'updates',
-      titleAr: 'ركاز | المستجدات القانونية',
-      titleEn: 'Rikaz | Legal Updates'
-    },
-    {
-      sector: 'media',
-      titleAr: 'ركاز | الإعلام والمحتوى المرئي',
-      titleEn: 'Rikaz | Media & Highlights'
-    }
-  ]
+  const sections: BlogSectionItem[] = blogSections.length > 0 ? blogSections : defaultSections
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -144,6 +142,23 @@ export default function BlogPageClient({ locale }: { locale: 'en' | 'ar' }) {
               : `Showing ${filteredBlogs.length} article(s) in ${sections.find(s => s.sector === selectedSector)?.titleEn}`
             }
           </p>
+        )}
+
+        {/* Section descriptions */}
+        {blogSectionsHeading && sections.some((s) => s.description) && (
+          <div className={`mt-8 pt-8 border-t border-white/20 ${isAr ? 'text-right' : 'text-left'}`} dir={isAr ? 'rtl' : 'ltr'}>
+            <h3 className="text-lg font-bold text-white mb-4">{blogSectionsHeading}</h3>
+            <ol className="space-y-4 list-none pl-0">
+              {sections.map((section, index) => (
+                <li key={section.sector} className="text-white/90 text-sm leading-relaxed">
+                  <p className="font-semibold text-white mb-1">
+                    {index + 1}- {section.titleAr} – {section.titleEn}
+                  </p>
+                  {section.description && <p className="text-white/85">{section.description}</p>}
+                </li>
+              ))}
+            </ol>
+          </div>
         )}
       </div>
 

@@ -194,24 +194,25 @@
         ]
       }
     ],
+    "blogSectionsHeading": "Knowledge and Media Sections:",
     "blogSections": [
       {
         "sector": "insights",
         "titleAr": "ركاز | دراسات وأبحاث",
-        "titleEn": "Rikaz | Legal Insights",
-        "description": "A specialized knowledge platform publishing legal articles and studies that reflect the group's thinking and professional analysis of modern laws and judgments."
+        "titleEn": "Rekaz | Legal Insights",
+        "description": "A specialized knowledge platform for publishing legal articles and studies that reflect the group's thinking and professional analysis of legislation and recent judgments."
       },
       {
         "sector": "updates",
         "titleAr": "ركاز | المستجدات القانونية",
-        "titleEn": "Rikaz | Legal Updates",
-        "description": "A dedicated section covering the latest legal developments in Kuwait and the region, including legislative amendments, judicial rulings, and regulatory decisions."
+        "titleEn": "Rekaz | Legal Updates",
+        "description": "A section dedicated to covering the latest legal developments in Kuwait and the region, including legislative amendments, judicial rulings, and regulatory decisions."
       },
       {
         "sector": "media",
         "titleAr": "ركاز | الإعلام والمحتوى المرئي",
-        "titleEn": "Rikaz | Media & Highlights",
-        "description": "A space documenting the group's media and community activities, including meetings, seminars, conferences, and visual content from Rekaz Legal Group events."
+        "titleEn": "Rekaz | Media & Highlights",
+        "description": "A space documenting the group's media and community presence, including interviews, seminars, conferences, and visual content from Rekaz Legal Group events."
       }
     ]
   },

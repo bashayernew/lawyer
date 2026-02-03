@@ -10,8 +10,7 @@ import {
   Scale, 
   Handshake, 
   Laptop,
-  CheckCircle2,
-  Sparkles
+  CheckCircle2
 } from 'lucide-react'
 
 // Icon mapping for services - professional icons matching each service
@@ -37,8 +36,7 @@ export default async function ServicesPage({ params: { locale } }: { params: { l
   const detailedServices = services.detailedServices || []
   const finalNote = services.finalNote || {}
   const teamSection = services.teamSection || {}
-  const clientsPartnersSection = services.clientsPartnersSection || { sectors: [], closing: '' }
-  const visionSection = services.visionSection || { points: [], vision: '' }
+  const clientsPartnersSection = services.clientsPartnersSection || { sectors: [] }
   const closingSection = services.closingSection || { description: '' }
     
   return (
@@ -163,49 +161,6 @@ export default async function ServicesPage({ params: { locale } }: { params: { l
                   ))}
                 </div>
               )}
-              <div className="text-lg md:text-xl text-white leading-relaxed pt-6 border-t-2 border-gradient-to-r from-transparent via-white/20 to-transparent font-medium">
-                {clientsPartnersSection.closing || ''}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t-2 border-primary/30 pt-16">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/30 rounded-xl blur-md"></div>
-              <div className="relative rounded-xl bg-gradient-to-br from-primary/20 to-forest/20 p-3 border-2 border-primary/40">
-                <Sparkles className="h-7 w-7 text-primary" strokeWidth={2} />
-              </div>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-              {visionSection.title || ''}
-            </h2>
-          </div>
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-forest/20 to-primary/20 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></div>
-            <div className="relative rounded-2xl border-2 border-primary/30 bg-primary/95 backdrop-blur-md p-10 md:p-12 shadow-2xl">
-              <div className="text-lg md:text-xl text-white leading-relaxed mb-8 font-medium">
-                {visionSection.description || ''}
-              </div>
-              {Array.isArray(visionSection.points) && visionSection.points.length > 0 && (
-                <div className="space-y-5 mb-8">
-                  {visionSection.points.map((point: string, index: number) => (
-                    <div key={index} className="flex items-start gap-4 group/item p-4 rounded-xl bg-white/10 border-2 border-white/20 hover:border-white/40 transition-all">
-                      <div className="flex-shrink-0 mt-1 relative">
-                        <div className="absolute inset-0 bg-white/20 rounded-full blur-sm"></div>
-                        <div className="relative rounded-full bg-white/20 p-2 border-2 border-white/30 group-hover/item:scale-110 transition-transform">
-                          <Sparkles className="h-5 w-5 text-white" strokeWidth={2.5} />
-                        </div>
-                      </div>
-                      <span className="text-lg text-white pt-1 font-medium">{point}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div className="text-lg md:text-xl text-white leading-relaxed whitespace-pre-line pt-6 border-t-2 border-gradient-to-r from-transparent via-white/20 to-transparent font-medium">
-                {visionSection.vision || ''}
-              </div>
             </div>
           </div>
         </div>

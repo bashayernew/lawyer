@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 
@@ -20,11 +21,15 @@ export default function Header({ locale: _locale }: { locale?: 'en' | 'ar' }) {
     <header className="sticky top-0 z-50 bg-primary text-white backdrop-blur-md border-b border-white/20 shadow-lg">
       <div className="container flex items-center justify-between py-4">
         <Link href={`/${current}`} className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
-          <div className="h-10 w-10 rounded-lg bg-white/20 grid place-items-center text-white shadow-md">
-            <span className="sr-only">Logo</span>
-            <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M5 5l7 14 7-14" />
-            </svg>
+          <div className="h-10 w-12 overflow-hidden rounded flex-shrink-0 relative">
+            <span className="sr-only">Rekaz Legal Group</span>
+            <Image
+              src="/rekaz-logo.jpeg"
+              alt=""
+              fill
+              className="object-cover object-top"
+              sizes="48px"
+            />
           </div>
           <span className="font-serif text-xl font-bold text-white drop-shadow-sm">Rekaz Legal Group</span>
         </Link>

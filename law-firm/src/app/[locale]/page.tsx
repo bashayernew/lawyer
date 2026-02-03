@@ -12,7 +12,6 @@ import {
   CheckCircle2, 
   ArrowRight,
   ChevronDown,
-  Sparkles,
   Zap,
   Award,
   Trophy
@@ -219,63 +218,11 @@ export default async function HomePage({ params: { locale } }: { params: { local
                   </div>
                 ))}
               </div>
-              <div className="text-lg md:text-xl text-white leading-relaxed pt-6 border-t-2 border-gradient-to-r from-transparent via-white/20 to-transparent font-medium mb-6">
-                {messages.services.clientsPartnersSection.closing}
-              </div>
               <div className="flex justify-center pt-4">
                 <Link href={`/${locale}/contact`} className="btn btn-primary text-base px-10 py-4 flex items-center gap-3 group shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
                   <span className="font-semibold">{isAr ? 'تواصل معنا' : 'Get In Touch'}</span>
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
                 </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-gradient-to-br from-forest/20 via-primary/15 to-forest/20 py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(120,53,15,0.15),transparent_50%)]"></div>
-        <div className="container relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="relative">
-                <div className="absolute inset-0 bg-white/30 rounded-xl blur-md"></div>
-                <div className="relative rounded-xl bg-white/30 backdrop-blur-sm p-3 border-2 border-white/40">
-                  <Target className="h-7 w-7 text-white" strokeWidth={2} />
-                </div>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-                {messages.services.visionSection.title}
-              </h2>
-            </div>
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-white/20 via-white/30 to-white/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-70 transition-opacity"></div>
-              <div className="relative rounded-2xl border-2 border-white/40 bg-primary/95 backdrop-blur-md p-10 md:p-12 shadow-2xl">
-                <div className="text-lg md:text-xl text-white leading-relaxed mb-8 font-medium">
-                  {messages.services.visionSection.description}
-                </div>
-                <div className="space-y-5 mb-8">
-                  {messages.services.visionSection.points.map((point: string, index: number) => (
-                    <div key={index} className="flex items-start gap-4 group p-4 rounded-xl bg-white/10 border-2 border-white/20 hover:border-white/40 transition-all">
-                      <div className="flex-shrink-0 mt-1 relative">
-                        <div className="absolute inset-0 bg-white/20 rounded-full blur-sm"></div>
-                        <div className="relative rounded-full bg-white/20 p-2 border-2 border-white/30 group-hover:scale-110 transition-transform">
-                          <Sparkles className="h-5 w-5 text-white" strokeWidth={2.5} />
-                        </div>
-                      </div>
-                      <span className="text-lg text-white pt-1 font-medium">{point}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="text-lg md:text-xl text-white leading-relaxed whitespace-pre-line pt-6 border-t-2 border-gradient-to-r from-transparent via-white/20 to-transparent font-medium mb-6">
-                  {messages.services.visionSection.vision}
-                </div>
-                <div className="flex justify-center pt-4">
-                  <Link href={`/${locale}/services`} className="btn bg-forest hover:bg-[#0d4a2a] text-white border-2 border-forest text-base px-10 py-4 flex items-center gap-3 group shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
-                    <span className="font-semibold">{isAr ? 'اكتشف خدماتنا' : 'Explore Our Services'}</span>
-                    <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
-                  </Link>
-                </div>
               </div>
             </div>
           </div>

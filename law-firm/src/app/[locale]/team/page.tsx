@@ -10,13 +10,28 @@ export const revalidate = 0
 export default async function TeamPage({ params: { locale } }: { params: { locale: 'en' | 'ar' } }) {
   const content = (await import(`@/content/${locale}.json`)).default
   const storedMembers = await readTeamAsync()
-  const members = storedMembers.length > 0 ? storedMembers : content.team.members
+  const isAr = locale === 'ar'
+  const members =
+    storedMembers.length > 0
+      ? isAr
+        ? storedMembers.map((m: any, i: number) => {
+            const localeMember = content.team.members[i]
+            if (!localeMember) return m
+            return {
+              ...m,
+              name: localeMember.name ?? m.name,
+              role: localeMember.role ?? m.role,
+              bullets: localeMember.bullets ?? m.bullets,
+              description: localeMember.description ?? m.description,
+            }
+          })
+        : storedMembers
+      : content.team.members
   const about = content.about
   const blogSections = content.team.blogSections || []
   const icons = [Zap, Target, Award]
   const blogIcons = [BookOpen, FileText, Video]
-  const isAr = locale === 'ar'
-  
+
   return (
     <main className="container py-16 md:py-24">
       <div className="mb-12 flex items-center gap-4">

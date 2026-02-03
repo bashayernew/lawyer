@@ -8,7 +8,7 @@ export default function Footer({ locale: _locale }: { locale?: 'en' | 'ar' }) {
   const t = (key: string) => {
     const map = locale === 'ar'
       ? { navigate: 'تصفّح', home: 'الرئيسية', services: 'الخدمات', team: 'الفريق', blog: 'المدونة', contact: 'تواصل', address: 'الشعب البحري – قطعة ٨ – شارع الخليج العربي – برج دانة بلازا – بجانب نادي فلكس VIP – الدور الخامس – مكتب ٥٠٥', closing: 'في ختام الأمر… نثمّن ثقتكم… ومعكم تظل راية ركاز خفّاقة.' }
-      : { navigate: 'Navigate', home: 'Home', services: 'Services', team: 'Team', blog: 'Blog', contact: 'Contact', address: 'Al-Shaab Al-Bahri – Block 8 – Al-Khaleej Al-Arabi Street – Dana Plaza Tower – next to Flex VIP Club – 5th floor – Office 505', closing: 'In conclusion, the family of Rekaz Legal Group extends its highest thanks and appreciation… With you, the banner of Rekaz continues to flutter.' }
+      : { navigate: 'Navigate', home: 'Home', services: 'Services', team: 'Team', blog: 'Blog', contact: 'Contact', address: 'Al-Shaab Al-Bahri – Block 8 – Al-Khaleej Al-Arabi Street – Dana Plaza Tower – next to Flex VIP Club – 5th floor – Office 505', closing: 'In conclusion, the family of Rukaz Legal Group extends its highest thanks and appreciation… With you, the banner of Rukaz continues to flutter.' }
     return (map as any)[key]
   }
   return (

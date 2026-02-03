@@ -8,20 +8,20 @@ export const metadata: Metadata = {
     default: 'Rukaz Legal Group',
     template: '%s | Rukaz Legal Group'
   },
-  description: 'Rekaz Legal Group — legal consulting, litigation, contracts, and advisory.',
+  description: 'Rukaz Legal Group — legal consulting, litigation, contracts, and advisory.',
   icons: {
     icon: '/favicon.svg'
   },
   openGraph: {
     title: 'Rukaz Legal Group',
-    description: 'Rekaz Legal Group — legal consulting, litigation, contracts, and advisory.',
+    description: 'Rukaz Legal Group — legal consulting, litigation, contracts, and advisory.',
     type: 'website',
     images: ['/og.svg']
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Rukaz Legal Group',
-    description: 'Rekaz Legal Group — legal consulting, litigation, contracts, and advisory.',
+    description: 'Rukaz Legal Group — legal consulting, litigation, contracts, and advisory.',
     images: ['/og.svg']
   }
 }

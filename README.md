@@ -1,6 +1,6 @@
-﻿# Rukaz Legal Group Website
+# Rekaz Legal Group Website
 
-A bilingual (Arabic/English) website for **Rukaz Legal Group**, showcasing team profiles, practice areas, and contact info.
+A bilingual (Arabic/English) website for **Rekaz Legal Group**, showcasing team profiles, practice areas, and contact info.
 
 **Live:** https://lawyer-7s7m.vercel.app  
 **Repo:** https://github.com/bashayernew/lawyer

@@ -56,7 +56,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
               </h2>
             </div>
             <div className="text-lg md:text-xl text-white leading-relaxed mb-8 font-medium text-center">
-              {isAr ? 'تستمد مجموعة ركاز القانونية هويتها المؤسسية من منظومة قيمية راسخة تقوم على ثلاث ركائز رئيسية:' : 'Rukaz Legal Group derives its institutional identity from a solid value system based on three main pillars:'}
+              {isAr ? 'تستمد مجموعة ركاز القانونية هويتها المؤسسية من منظومة قيمية راسخة تقوم على ثلاث ركائز رئيسية:' : 'Rekaz Legal Group derives its institutional identity from a solid value system based on three main pillars:'}
             </div>
             <div className="grid sm:grid-cols-3 gap-6 mb-8">
               {messages.about.principles.map((principle: any, index: number) => {

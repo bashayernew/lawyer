@@ -8,7 +8,7 @@
   <rect width="1200" height="630" fill="#ffffff"/>
   <path d="M0,340 C260,420 520,220 780,310 C1040,400 1200,300 1200,300 L1200,0 L0,0 Z" fill="url(#g)"/>
   <rect x="80" y="380" width="1040" height="140" rx="20" fill="#D6AE7B" opacity="0.85"/>
-  <text x="100" y="465" font-family="Inter, Arial" font-size="64" fill="#1F2937">Rukaz Legal Group</text>
+  <text x="100" y="465" font-family="Inter, Arial" font-size="64" fill="#1F2937">Rekaz Legal Group</text>
   <text x="100" y="515" font-family="Inter, Arial" font-size="28" fill="#1F2937">Legal expertise with speed, efficiency, and achievement</text>
 </svg>
 

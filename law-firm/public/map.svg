@@ -21,6 +21,6 @@
     <path d="M0 720 H1200"/>
   </g>
   <circle cx="600" cy="400" r="14" fill="#D6AE7B" stroke="#0F3D3E" stroke-width="4"/>
-  <text x="620" y="410" font-family="Inter, Arial" font-size="20" fill="#1F2937">Rukaz Legal Group</text>
+  <text x="620" y="410" font-family="Inter, Arial" font-size="20" fill="#1F2937">Rekaz Legal Group</text>
 </svg>
 

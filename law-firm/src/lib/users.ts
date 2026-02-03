@@ -117,4 +117,3 @@ export async function writeUsersAsync(users: UserRecord[]): Promise<void> {
 
   writeUsers(users)
 }
-

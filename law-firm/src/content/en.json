@@ -16,25 +16,25 @@
     "clients": "Clients",
     "contact": "Contact",
     "address": "Al-Shaab Al-Bahri – Block 8 – Al-Khaleej Al-Arabi Street – Dana Plaza Tower – next to Flex VIP Club – 5th floor – Office 505",
-    "closing": "In conclusion, the family of Rukaz Legal Group extends its highest thanks and appreciation… With you, the banner of Rukaz continues to flutter."
+    "closing": "In conclusion, the family of Rekaz Legal Group extends its highest thanks and appreciation… With you, the banner of Rekaz continues to flutter."
   },
   "home": {
-    "headline": "Rukaz Legal Group",
+    "headline": "Rekaz Legal Group",
     "subhead": "A specialized legal institution combining deep expertise and disciplined innovation",
     "contactUs": "Contact Us",
     "learnMore": "Learn more",
     "ourServices": "Our Services",
     "viewAll": "View all services",
     "ourClients": "Trusted by clients across sectors",
-    "aboutAlt": "Rukaz Legal Group team at work",
+    "aboutAlt": "Rekaz Legal Group team at work",
     "ctaTitle": "Ready to move forward with confidence?",
     "legalServicesTitle": "Our Legal Services",
-    "legalServicesDescription": "Rukaz Legal Group offers a comprehensive suite of legal and advisory services covering various sectors, through a modern institutional structure that combines law, governance, and technological innovation, including:\n\n• Core Legal Services: Litigation in commercial, civil, labor, criminal, family, administrative, and constitutional cases.\n\n• Contractual and Regulatory Consultations: Drafting and reviewing contracts and agreements, and supporting companies in their policies and legal regulations.\n\n• Arbitration and Dispute Resolution: Representing parties in commercial and investment arbitration and legal mediation.\n\n• Technical Services and Regulatory Compliance: Through its technical arm RZ Solutions – IT & Compliance, in areas of compliance, anti-money laundering, data protection, and digital legal transformation.",
+    "legalServicesDescription": "Rekaz Legal Group offers a comprehensive suite of legal and advisory services covering various sectors, through a modern institutional structure that combines law, governance, and technological innovation, including:\n\n• Core Legal Services: Litigation in commercial, civil, labor, criminal, family, administrative, and constitutional cases.\n\n• Contractual and Regulatory Consultations: Drafting and reviewing contracts and agreements, and supporting companies in their policies and legal regulations.\n\n• Arbitration and Dispute Resolution: Representing parties in commercial and investment arbitration and legal mediation.\n\n• Technical Services and Regulatory Compliance: Through its technical arm RZ Solutions – IT & Compliance, in areas of compliance, anti-money laundering, data protection, and digital legal transformation.",
     "viewOurServices": "View Our Services"
   },
   "about": {
     "title": "Who We Are",
-    "whoWeAre": "Rukaz Legal Group has practiced law since 2013, providing legal advice and research in local and international law. The group brings together distinguished lawyers, consultants, and researchers registered in approved bars and associations. Rukaz also pursues its activities through strategic partnerships abroad.",
+    "whoWeAre": "Rekaz Legal Group has practiced law since 2013, providing legal advice and research in local and international law. The group brings together distinguished lawyers, consultants, and researchers registered in approved bars and associations. Rekaz also pursues its activities through strategic partnerships abroad.",
     "principlesTitle": "Principles & Values",
     "principles": [
       { "title": "Speed", "text": "Timely decisions, prompt responses, and adherence to correct legal procedures." },
@@ -43,73 +43,73 @@
     ]
   },
   "services": {
-    "title": "Services",
+    "title": "Our Legal Services",
     "intro": {
       "title": "⚖ Our Legal Services",
-      "description": "At Rukaz Legal Group, we believe that legal service is not just defense or consultation, but a comprehensive partnership built on trust, knowledge, and professionalism.\n\nTherefore, we have designed a service system that combines law, governance, and technological innovation, to meet our clients' needs in Kuwait and the region with flexibility and high efficiency."
+      "description": "Rekaz Legal Group provides an integrated legal services system delivered through an institutional methodology based on precise analysis, regulatory compliance, and sound risk management, while taking into account the nature and context of each file:"
     },
     "detailedServices": [
       {
         "icon": "📑",
-        "title": "Consultations and Contracts",
-        "description": "At Rukaz Legal Group, we provide precise consultations based on a deep understanding of the legal and economic reality,\n\nand help our clients make informed decisions that ensure compliance and protect their future interests.\n\nOur work includes preparing, drafting, and reviewing contracts and agreements of various types,\nfrom commercial and labor to technical and digital,\nensuring text integrity and clause completeness according to the highest standards of modern legal drafting.\n\nWe pay special attention to technical contracts and smart agreements,\nthat integrate law with technology within a framework of governance and transparency."
-      },
-      {
-        "icon": "💼",
-        "title": "Commercial and Labor Cases",
-        "description": "In the fast-paced business world, we recognize the importance of quick and clear legal solutions.\n\nOur team includes experts specialized in commercial and financial disputes,\nfrom corporate and contract cases to claims and compensation.\n\nWe also provide practical solutions in labor law through preparing internal regulations and drafting employment contracts,\nand following up on labor disputes in a way that preserves rights and supports the stability of the contractual relationship."
-      },
-      {
-        "icon": "⚖",
-        "title": "Intellectual Property and Trademarks",
-        "description": "We place intellectual property protection among our priorities,\nbecause creative ideas deserve complete legal protection.\n\nWe provide specialized services in:\n• Registration of trademarks, trade names, and logos.\n• Following up on renewal, transfer, and assignment procedures.\n• Taking legal action against any violation before competent authorities.\n\nOur expertise also includes copyright, software, and digital content,\nto ensure our clients have a safe environment that supports innovation and creativity in the digital age."
-      },
-      {
-        "icon": "⚙",
-        "title": "Criminal Cases",
-        "description": "At Rukaz Legal Group, we stand with our clients confidently in all stages of criminal cases,\nfrom investigation before the Public Prosecution until the final judgment.\n\nWe excel with extensive experience in economic crimes and cybercrimes,\nand defend our clients' rights with high professionalism and complete confidentiality.\n\nOur team also includes lawyers specialized in false reports, defamation, and electronic fraud,\nbelieving that true justice is built on accuracy and fairness."
-      },
-      {
-        "icon": "👨‍👩‍👧",
-        "title": "Personal Status Cases",
-        "description": "We understand that family cases are not only about law, but also about feelings and human relationships.\n\nTherefore, we deal with each case with the highest degrees of confidentiality and respect,\nand provide comprehensive legal support in cases of marriage, divorce, khulʿ, alimony, custody, guardianship, wills, and inheritance.\n\nWe work according to Islamic Sharia provisions and Kuwaiti laws,\nwith a human approach that balances legal justice and family privacy."
-      },
-      {
-        "icon": "🏦",
-        "title": "Banking and Financial Cases",
-        "description": "In the world of finance and business, success needs a legal partner who understands the details.\n\nWe help our clients manage banking and financial disputes,\nfrom loans and guarantees to checks and financial transfers.\n\nWe also provide comprehensive support in financial compliance (Compliance),\nand follow up on investigations in money laundering and terrorism financing cases,\nin cooperation with regulatory authorities inside and outside Kuwait,\nto ensure the highest standards of transparency and modern banking governance."
-      },
-      {
-        "icon": "🏛",
-        "title": "Administrative and Constitutional Cases",
-        "description": "We excel with high expertise in administrative and constitutional disputes before all courts and competent departments.\n\nWe provide comprehensive legal representation in:\n• Appeals against administrative and functional decisions.\n• Cases related to government regulations and bylaws.\n• Disputes related to administrative contracts and public tenders.\n\nOur team combines specialized legal analysis with institutional understanding of government procedures,\nmaking us a trusted partner in sensitive regulatory and constitutional cases."
-      },
-      {
-        "icon": "🕊",
-        "title": "Arbitration and Dispute Resolution",
-        "description": "We recognize that sometimes time is more important than litigation,\ntherefore we adopt a balanced approach based on arbitration, mediation, and legal negotiations as effective alternatives for resolving disputes.\n\nWe provide professional representation in commercial, investment, and construction arbitration,\nand prepare arbitration agreements and rules compatible with international standards,\nand represent parties before arbitration centers in Kuwait and abroad,\nto ensure fair and quick settlement that preserves business relationships and business stability."
+        "title": "1- Legal Consultations and Contract Drafting",
+        "description": "We provide legal consultations grounded in a comprehensive understanding of the legal and economic landscape, helping our clients make well‑informed decisions that ensure compliance and protect legal interests in the short and long term.\n\nOur scope includes preparing, drafting, and reviewing commercial and labor contracts and agreements, with special attention to technical contracts and smart agreements, in line with modern legal drafting standards and sound governance."
       },
       {
         "icon": "💻",
-        "title": "Regulatory Compliance and Digital Legal Transformation Division – RZ Solutions",
-        "description": "Under the umbrella of RZ Solutions – IT & Compliance,\nwe have established the first legal-technical arm in Kuwait that combines law, digital governance, and regulatory compliance in one system.\n\nThis division is concerned with helping institutions build a smart legal environment compatible with international standards,\nthrough:\n• Preparing and implementing KYC / AML compliance policies and anti-money laundering.\n• Developing internal governance systems and professional conduct rules.\n• Managing legal and technical risks using advanced digital tools.\n• Creating smart archiving systems and integrated data protection.\n\nThis integration between legal compliance and technical security represents a unique approach that redefines the concept of the modern law firm in Kuwait and the region."
+        "title": "2- Regulatory Compliance and Digital Legal Transformation",
+        "description": "RZ Solutions – IT & Compliance\nWithin its institutional structure, Rekaz Legal Group established a specialized legal‑technical arm that brings together law, digital governance, and regulatory compliance in one integrated system.\n\nThis division builds smart, standards‑compliant legal environments through KYC/AML policies, governance systems and professional conduct rules, legal and technical risk management, smart archiving solutions, and data protection.\n\nThis approach reflects an advanced vision of the modern law firm."
+      },
+      {
+        "icon": "💼",
+        "title": "3- Commercial and Labor Disputes",
+        "description": "We represent clients in commercial and financial disputes, company and contract cases, claims, and compensation, with a focus on practical solutions that preserve rights and reduce conflict.\n\nWe also provide labor law services, including internal regulations, drafting employment contracts, and follow‑up on labor disputes to balance regulatory compliance with contractual stability."
+      },
+      {
+        "icon": "⚖",
+        "title": "4- Intellectual Property and Trademarks",
+        "description": "We provide specialized services in intellectual property protection, including registering trademarks, names, and logos; handling renewal, transfer, and assignment procedures; and taking legal action against infringement.\n\nOur expertise extends to copyright, software, and digital content, supporting innovation in today’s digital environment."
+      },
+      {
+        "icon": "⚙",
+        "title": "5- Criminal Cases",
+        "description": "We represent clients in criminal matters across all stages, from investigations before the competent authorities through final judgments, with strict adherence to defense principles, legal precision, and professional confidentiality.\n\nWe have particular experience in economic crimes and cybercrimes."
+      },
+      {
+        "icon": "👨‍👩‍👧",
+        "title": "6- Family Cases",
+        "description": "We handle family matters with a legal approach that respects privacy and social sensitivity, in accordance with Islamic Sharia and Kuwaiti law.\n\nOur work includes marriage, divorce, khulʿ, alimony, custody, guardianship, wills, and inheritance, with balanced legal treatment that protects rights and respects the human dimension."
+      },
+      {
+        "icon": "🏦",
+        "title": "7- Banking and Financial Cases",
+        "description": "We provide legal representation in banking and financial disputes, including loans, guarantees, cheques, and financial transfers.\n\nWe also deliver specialized financial compliance services and handle cases related to anti‑money‑laundering and counter‑terrorism financing in cooperation with relevant regulatory authorities."
+      },
+      {
+        "icon": "🏛",
+        "title": "8- Administrative and Constitutional Cases",
+        "description": "We represent clients in administrative and constitutional disputes, including challenges to administrative and employment decisions, administrative contracts, and public tenders, based on in‑depth legal analysis and institutional understanding of government and regulatory procedures."
+      },
+      {
+        "icon": "🕊",
+        "title": "9- Arbitration and Dispute Resolution",
+        "description": "We provide arbitration, mediation, and legal negotiation services as effective alternatives to litigation when more efficient.\n\nWe represent parties in commercial, investment, and construction arbitration, and prepare arbitration agreements and rules in line with recognized standards in and outside Kuwait."
       }
     ],
     "finalNote": {
       "title": "🌐 Conclusion",
-      "description": "At Rukaz Legal Group, we believe that law and technology are two sides of one justice.\n\nWe put our expertise at the service of everyone seeking a safe, transparent, and advanced legal environment,\nto be together partners in building a future based on awareness, governance, and excellence."
+      "description": "At Rekaz Legal Group, we believe that law and technology are two sides of one justice.\n\nWe put our expertise at the service of everyone seeking a safe, transparent, and advanced legal environment,\nto be together partners in building a future based on awareness, governance, and excellence."
     },
     "ipSection": {
       "title": "Trademarks and Intellectual Property Rights",
-      "description": "Rukaz Legal Group professionally manages and protects intellectual property and trademarks. Our services include registering trademarks and trade names, renewing them, transferring ownership, and defending client rights before competent authorities, ensuring complete protection for innovations and technical and creative projects."
+      "description": "Rekaz Legal Group professionally manages and protects intellectual property and trademarks. Our services include registering trademarks and trade names, renewing them, transferring ownership, and defending client rights before competent authorities, ensuring complete protection for innovations and technical and creative projects."
     },
     "teamSection": {
       "title": "🔶 Our Legal Team",
-      "description": "At Rukaz Legal Group, we believe our success starts with our human resources.\n\nOur team includes distinguished lawyers, consultants, and legal researchers with extensive experience and high academic qualifications in various legal, administrative, and regulatory specializations.\n\nWe work as one team combining precision and discipline, committed to the highest standards of confidentiality and quality, and we continuously seek to develop our personnel through specialized training programs in digital transformation, contract drafting, arbitration, and corporate governance."
+      "description": "At Rekaz Legal Group, we believe our success starts with our human resources.\n\nOur team includes distinguished lawyers, consultants, and legal researchers with extensive experience and high academic qualifications in various legal, administrative, and regulatory specializations.\n\nWe work as one team combining precision and discipline, committed to the highest standards of confidentiality and quality, and we continuously seek to develop our personnel through specialized training programs in digital transformation, contract drafting, arbitration, and corporate governance."
     },
     "clientsPartnersSection": {
       "title": "Our Clients and Partners",
-      "description": "Rukaz Legal Group takes pride in its established relationships with a wide range of clients, including major companies, government institutions, entrepreneurs, investors, as well as individuals from various sectors:",
+      "description": "Rekaz Legal Group takes pride in its established relationships with a wide range of clients, including major companies, government institutions, entrepreneurs, investors, as well as individuals from various sectors:",
       "sectors": [
         "Banks and Financial Services.",
         "Energy, Construction, and Real Estate.",
@@ -120,7 +120,7 @@
     },
     "visionSection": {
       "title": "Our Future Vision",
-      "description": "At Rukaz Legal Group, we strive to establish our position as one of the leading legal references in Kuwait and the region, by combining:",
+      "description": "At Rekaz Legal Group, we strive to establish our position as one of the leading legal references in Kuwait and the region, by combining:",
       "points": [
         "Established legal professionalism,",
         "and advanced technological innovation."
@@ -129,7 +129,7 @@
     },
     "closingSection": {
       "title": "Closing Words",
-      "description": "Rukaz Legal Group is not just a legal group, but an integrated institutional system that combines legal thinking, technological innovation, and ethical responsibility.\n\nWe believe that justice is not only achieved in court, but also through commitment to professionalism, transparency, and excellence in work.\n\nFrom this belief, we continue to develop our tools, systems, and services to always be worthy of our clients' trust, and a reliable partner in building an aware and advanced legal future."
+      "description": "Rekaz Legal Group is not just a legal group, but an integrated institutional system that combines legal thinking, technological innovation, and ethical responsibility.\n\nWe believe that justice is not only achieved in court, but also through commitment to professionalism, transparency, and excellence in work.\n\nFrom this belief, we continue to develop our tools, systems, and services to always be worthy of our clients' trust, and a reliable partner in building an aware and advanced legal future."
     },
     "learnMore": "Learn more about our services",
     "list": [
@@ -183,7 +183,7 @@
         "role": "Lawyer",
         "image": "/team/eman.jpg",
         "bullets": [
-          "Member of Rukaz",
+          "Member of Rekaz",
           "Lawyer in Constitutional & Cassation Court",
           "LLB Ajman University 2014",
           "Specializes in Personal Status, Administrative Law, Medical Liability",
@@ -221,7 +221,7 @@
         "sector": "media",
         "titleAr": "ركاز | الإعلام والمحتوى المرئي",
         "titleEn": "Rikaz | Media & Highlights",
-        "description": "A space documenting the group's media and community activities, including meetings, seminars, conferences, and visual content from Rukaz Legal Group events."
+        "description": "A space documenting the group's media and community activities, including meetings, seminars, conferences, and visual content from Rekaz Legal Group events."
       }
     ]
   },
@@ -233,7 +233,7 @@
       "legal": "66633760",
       "financial": "50922149"
     },
-    "social": "@RukazKw"
+    "social": "@RekazKw"
   }
 }
 

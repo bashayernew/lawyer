@@ -26,7 +26,7 @@ export default function Header({ locale: _locale }: { locale?: 'en' | 'ar' }) {
               <path d="M5 5l7 14 7-14" />
             </svg>
           </div>
-          <span className="font-serif text-xl font-bold text-white drop-shadow-sm">Rukaz Legal Group</span>
+          <span className="font-serif text-xl font-bold text-white drop-shadow-sm">Rekaz Legal Group</span>
         </Link>
         
         {/* Desktop Navigation */}

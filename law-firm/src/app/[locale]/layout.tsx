@@ -5,23 +5,23 @@ import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Rukaz Legal Group',
-    template: '%s | Rukaz Legal Group'
+    default: 'Rekaz Legal Group',
+    template: '%s | Rekaz Legal Group'
   },
-  description: 'Rukaz Legal Group — legal consulting, litigation, contracts, and advisory.',
+  description: 'Rekaz Legal Group — legal consulting, litigation, contracts, and advisory.',
   icons: {
     icon: '/favicon.svg'
   },
   openGraph: {
-    title: 'Rukaz Legal Group',
-    description: 'Rukaz Legal Group — legal consulting, litigation, contracts, and advisory.',
+    title: 'Rekaz Legal Group',
+    description: 'Rekaz Legal Group — legal consulting, litigation, contracts, and advisory.',
     type: 'website',
     images: ['/og.svg']
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Rukaz Legal Group',
-    description: 'Rukaz Legal Group — legal consulting, litigation, contracts, and advisory.',
+    title: 'Rekaz Legal Group',
+    description: 'Rekaz Legal Group — legal consulting, litigation, contracts, and advisory.',
     images: ['/og.svg']
   }
 }

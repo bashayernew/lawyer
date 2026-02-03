@@ -4,10 +4,10 @@ const DEFAULT_LANG = 'en';
 
 const translations = {
   en: {
-    meta_title: 'Lawyer Abdulrahman Al-Rahman — Rukaz Legal Group',
+    meta_title: 'Lawyer Abdulrahman Al-Rahman — Rekaz Legal Group',
     meta_description: 'Premium legal services in Kuwait. Justice begins with understanding. Book a consultation today.',
     // Page meta overrides
-    about_title: 'About — Rukaz Legal Group',
+    about_title: 'About — Rekaz Legal Group',
     about_description: 'Biography, education, experience, and values of Lawyer Abdulrahman Al-Rahman.',
     nav_home: 'Home',
     nav_about: 'About',
@@ -33,7 +33,7 @@ const translations = {
     svc_desc_realestate: 'Transactions, leases, disputes, and property due diligence.',
     svc_desc_family: 'Marriage, divorce, custody, and inheritance matters.',
     svc_desc_contracts: 'Drafting, negotiation, and enforcement of commercial agreements.',
-    hero_badge: 'Founder of Rukaz Legal Group',
+    hero_badge: 'Founder of Rekaz Legal Group',
     hero_title: 'Lawyer Abdulrahman Al-Rahman',
     hero_sub: '“Justice begins with understanding.”',
     hero_cta_book: 'Book a Consultation',

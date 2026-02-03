@@ -8,7 +8,7 @@ export default function Footer({ locale: _locale }: { locale?: 'en' | 'ar' }) {
   const t = (key: string) => {
     const map = locale === 'ar'
       ? { navigate: 'تصفّح', home: 'الرئيسية', services: 'الخدمات', team: 'الفريق', blog: 'المدونة', contact: 'تواصل', address: 'الشعب البحري – قطعة ٨ – شارع الخليج العربي – برج دانة بلازا – بجانب نادي فلكس VIP – الدور الخامس – مكتب ٥٠٥', closing: 'في ختام الأمر… نثمّن ثقتكم… ومعكم تظل راية ركاز خفّاقة.' }
-      : { navigate: 'Navigate', home: 'Home', services: 'Services', team: 'Team', blog: 'Blog', contact: 'Contact', address: 'Al-Shaab Al-Bahri – Block 8 – Al-Khaleej Al-Arabi Street – Dana Plaza Tower – next to Flex VIP Club – 5th floor – Office 505', closing: 'In conclusion, the family of Rukaz Legal Group extends its highest thanks and appreciation… With you, the banner of Rukaz continues to flutter.' }
+      : { navigate: 'Navigate', home: 'Home', services: 'Services', team: 'Team', blog: 'Blog', contact: 'Contact', address: 'Al-Shaab Al-Bahri – Block 8 – Al-Khaleej Al-Arabi Street – Dana Plaza Tower – next to Flex VIP Club – 5th floor – Office 505', closing: 'In conclusion, the family of Rekaz Legal Group extends its highest thanks and appreciation… With you, the banner of Rekaz continues to flutter.' }
     return (map as any)[key]
   }
   return (
@@ -16,7 +16,7 @@ export default function Footer({ locale: _locale }: { locale?: 'en' | 'ar' }) {
       <div className="bg-gradient-to-b from-primary/80 to-primary/90 backdrop-blur">
         <div className="container grid md:grid-cols-4 gap-8 py-12">
           <div>
-            <div className="font-serif text-xl font-semibold mb-3">Rukaz Legal Group</div>
+            <div className="font-serif text-xl font-semibold mb-3">Rekaz Legal Group</div>
             <p className="text-sm/6 text-white/80">{t('address')}</p>
           </div>
           <div>
@@ -42,7 +42,7 @@ export default function Footer({ locale: _locale }: { locale?: 'en' | 'ar' }) {
       <div className="border-t border-white/10 bg-primary/95 text-center py-6">
         <div className="container">
           <p className="text-sm text-white/80 mb-2">{t('closing')}</p>
-          <p className="text-xs text-white/70">© {new Date().getFullYear()} Rukaz Legal Group. All rights reserved.</p>
+          <p className="text-xs text-white/70">© {new Date().getFullYear()} Rekaz Legal Group. All rights reserved.</p>
         </div>
       </div>
     </footer>

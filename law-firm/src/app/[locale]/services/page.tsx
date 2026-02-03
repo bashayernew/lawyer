@@ -34,10 +34,6 @@ export default async function ServicesPage({ params: { locale } }: { params: { l
   const services = messages.services || {}
   const intro = services.intro || {}
   const detailedServices = services.detailedServices || []
-  const finalNote = services.finalNote || {}
-  const teamSection = services.teamSection || {}
-  const clientsPartnersSection = services.clientsPartnersSection || { sectors: [] }
-  const closingSection = services.closingSection || { description: '' }
     
   return (
     <main className="container py-16 md:py-24">
@@ -84,108 +80,6 @@ export default async function ServicesPage({ params: { locale } }: { params: { l
           )
         })}
 
-        <div className="border-t-2 border-primary/30 pt-16">
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 via-forest/30 to-primary/30 rounded-2xl blur-xl opacity-60 group-hover:opacity-80 transition-opacity"></div>
-            <div className="relative rounded-2xl border-2 border-primary/40 bg-gradient-to-br from-primary/10 via-forest/10 to-primary/10 backdrop-blur-md p-10 md:p-12 shadow-2xl">
-              <div className="flex items-start gap-6 mb-6">
-                <div className="flex-shrink-0 relative">
-                  <div className="absolute inset-0 bg-white/30 rounded-2xl blur-md"></div>
-                  <div className="relative rounded-2xl bg-white/30 backdrop-blur-sm p-4 border-2 border-white/40">
-                    <CheckCircle2 className="h-8 w-8 text-primary" strokeWidth={2} />
-                  </div>
-                </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg flex-1 pt-2">
-                  {finalNote.title?.replace(/🌐\s*/, '') || ''}
-                </h2>
-              </div>
-              <div className="text-lg md:text-xl text-white leading-relaxed whitespace-pre-line font-medium">
-                {finalNote.description || ''}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t-2 border-primary/30 pt-16">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/30 rounded-xl blur-md"></div>
-              <div className="relative rounded-xl bg-gradient-to-br from-primary/20 to-forest/20 p-3 border-2 border-primary/40">
-                <Users className="h-7 w-7 text-primary" strokeWidth={2} />
-              </div>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-              {teamSection.title?.replace(/🔶\s*/, '') || ''}
-            </h2>
-          </div>
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-forest/20 to-primary/20 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></div>
-            <div className="relative rounded-2xl border-2 border-primary/30 bg-primary/95 backdrop-blur-md p-10 md:p-12 shadow-2xl">
-              <div className="text-lg md:text-xl text-white leading-relaxed whitespace-pre-line font-medium">
-                {teamSection.description || ''}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t-2 border-primary/30 pt-16">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/30 rounded-xl blur-md"></div>
-              <div className="relative rounded-xl bg-gradient-to-br from-primary/20 to-forest/20 p-3 border-2 border-primary/40">
-                <Building2 className="h-7 w-7 text-primary" strokeWidth={2} />
-              </div>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-              {clientsPartnersSection.title || ''}
-            </h2>
-          </div>
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-forest/20 to-primary/20 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></div>
-            <div className="relative rounded-2xl border-2 border-primary/30 bg-primary/95 backdrop-blur-md p-10 md:p-12 shadow-2xl">
-              <div className="text-lg md:text-xl text-white leading-relaxed mb-8 font-medium">
-                {clientsPartnersSection.description || ''}
-              </div>
-              {Array.isArray(clientsPartnersSection.sectors) && clientsPartnersSection.sectors.length > 0 && (
-                <div className="grid md:grid-cols-2 gap-4 mb-8">
-                  {clientsPartnersSection.sectors.map((sector: string, index: number) => (
-                    <div key={index} className="flex items-start gap-4 group/item p-4 rounded-xl bg-white/10 border-2 border-white/20 hover:border-white/40 transition-all">
-                      <div className="flex-shrink-0 mt-1 relative">
-                        <div className="absolute inset-0 bg-white/20 rounded-full blur-sm"></div>
-                        <div className="relative rounded-full bg-white/20 p-2 border-2 border-white/30 group-hover/item:scale-110 transition-transform">
-                          <CheckCircle2 className="h-5 w-5 text-white" strokeWidth={2.5} />
-                        </div>
-                      </div>
-                      <span className="text-lg text-white pt-1 font-medium">{sector}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t-2 border-primary/30 pt-16">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/30 rounded-xl blur-md"></div>
-              <div className="relative rounded-xl bg-gradient-to-br from-primary/20 to-forest/20 p-3 border-2 border-primary/40">
-                <CheckCircle2 className="h-7 w-7 text-primary" strokeWidth={2} />
-              </div>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">
-              {closingSection.title || ''}
-            </h2>
-          </div>
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-forest/20 to-primary/20 rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></div>
-            <div className="relative rounded-2xl border-2 border-primary/30 bg-primary/95 backdrop-blur-md p-10 md:p-12 shadow-2xl">
-              <div className="text-lg md:text-xl text-white leading-relaxed whitespace-pre-line font-medium">
-                {closingSection.description || ''}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </main>
   )

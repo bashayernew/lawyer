@@ -32,7 +32,7 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
                 <MessageCircle className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1">
-                <div className="text-sm font-semibold text-neutral-700 mb-1">Legal Admin (WhatsApp)</div>
+                <div className="text-sm font-semibold text-neutral-700 mb-1">Hotline</div>
                 <div className="text-base font-bold text-primary">{c.phones.legal}</div>
               </div>
             </div>
@@ -85,15 +85,16 @@ export default async function ContactPage({ params: { locale } }: { params: { lo
             locale
           }}
         />
-        {/* Map placed directly under the cards/form section */}
+        {/* Map: Google Maps embed to office location */}
         <div className="md:col-span-2">
-          <div className="relative w-full overflow-hidden rounded-xl border aspect-[16/9] max-h-[300px]">
+          <div className="w-full overflow-hidden rounded-xl border" style={{ height: 0, paddingBottom: '56%', position: 'relative' }}>
             <iframe
               title={locale === 'ar' ? 'خريطة الوصول إلى المكتب' : 'Map to office'}
-              className="absolute inset-0 h-full w-full"
+              src="https://www.google.com/maps?q=Ore+Legal+Group+lawyer+Abdulrahman+Saklaoui&output=embed"
+              style={{ border: 0, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+              allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps?q=Kuwait%20City&output=embed"
             />
           </div>
         </div>

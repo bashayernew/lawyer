@@ -24,7 +24,7 @@ export default function Header({ locale: _locale }: { locale?: 'en' | 'ar' }) {
           <div className="h-10 w-12 overflow-hidden rounded flex-shrink-0 relative">
             <span className="sr-only">Rekaz Legal Group</span>
             <Image
-              src="/logo-reen.jpeg"
+              src="/rekaz-logo.jpeg"
               alt=""
               fill
               className="object-cover object-top"

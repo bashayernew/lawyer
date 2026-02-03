@@ -143,24 +143,21 @@ export default function BlogPageClient({
             }
           </p>
         )}
-
-        {/* Section descriptions */}
-        {blogSectionsHeading && sections.some((s) => s.description) && (
-          <div className={`mt-8 pt-8 border-t border-white/20 ${isAr ? 'text-right' : 'text-left'}`} dir={isAr ? 'rtl' : 'ltr'}>
-            <h3 className="text-lg font-bold text-white mb-4">{blogSectionsHeading}</h3>
-            <ol className="space-y-4 list-none pl-0">
-              {sections.map((section, index) => (
-                <li key={section.sector} className="text-white/90 text-sm leading-relaxed">
-                  <p className="font-semibold text-white mb-1">
-                    {index + 1}- {section.titleAr} – {section.titleEn}
-                  </p>
-                  {section.description && <p className="text-white/85">{section.description}</p>}
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
       </div>
+
+      {/* Section description: show only when a section is selected, above the blogs */}
+      {selectedSector && (() => {
+        const section = sections.find((s) => s.sector === selectedSector)
+        if (!section?.description) return null
+        return (
+          <div className={`mb-8 p-6 rounded-xl border-2 border-primary/30 bg-primary/10 ${isAr ? 'text-right' : 'text-left'}`} dir={isAr ? 'rtl' : 'ltr'}>
+            <h3 className="text-lg font-bold text-white mb-2">
+              {section.titleAr} – {section.titleEn}
+            </h3>
+            <p className="text-white/90 text-sm leading-relaxed">{section.description}</p>
+          </div>
+        )
+      })()}
 
       {/* Blog Grid */}
       {loading ? (

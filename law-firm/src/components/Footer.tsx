@@ -34,7 +34,7 @@ export default function Footer({ locale: _locale }: { locale?: 'en' | 'ar' }) {
             <div className="flex flex-wrap gap-3">
               <a className="chip !border-white !bg-white !text-primary px-5 py-2" href="https://wa.me/96566633760" target="_blank" rel="noreferrer" aria-label="WhatsApp">WhatsApp</a>
               <a className="chip !border-white !bg-white !text-primary px-5 py-2" href="tel:+96550922149" aria-label="Call">Call</a>
-              <a className="chip !border-white !bg-white !text-primary px-5 py-2" href="mailto:info@rekaz.com.kw" aria-label="Email">Email</a>
+              <a className="chip !border-white !bg-white !text-primary px-5 py-2" href="mailto:Contact@rekazkw.com" aria-label="Email">Email</a>
             </div>
           </div>
         </div>

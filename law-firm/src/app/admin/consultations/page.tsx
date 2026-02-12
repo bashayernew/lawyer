@@ -37,6 +37,9 @@ function formatDate(value?: string | null) {
   }
 }
 
+const STORAGE_KEY = 'admin_authenticated'
+const USER_STORAGE_KEY = 'admin_user'
+
 export default function AdminConsultationsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -48,13 +51,33 @@ export default function AdminConsultationsPage() {
   const baseUrl = ''
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem('admin_authenticated')
+    const storedAuth = localStorage.getItem(STORAGE_KEY)
     const authed = storedAuth === 'true'
     setIsAuthenticated(authed)
     if (!authed) {
       router.replace('/admin')
       return
     }
+
+    const rawUser = localStorage.getItem(USER_STORAGE_KEY)
+    if (rawUser) {
+      try {
+        const user = JSON.parse(rawUser) as {
+          role?: 'admin' | 'editor' | 'viewer'
+          canManageConsultations?: boolean
+        }
+        const canManage =
+          user.canManageConsultations ?? (user.role === 'admin' || user.role === 'editor')
+        if (!canManage) {
+          router.replace('/admin')
+          return
+        }
+      } catch {
+        router.replace('/admin')
+        return
+      }
+    }
+
     void fetchConsultations()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

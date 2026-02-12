@@ -3,19 +3,29 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Loader2, PlusCircle, RefreshCcw, Trash2, Users } from 'lucide-react'
+import { Loader2, PlusCircle, RefreshCcw, Trash2, Users, Pencil } from 'lucide-react'
 
 type TeamMember = {
   id: string
+  /** Primary display name (fallback if no localized name is set) */
   name: string
   role?: string
+  /** Primary description (fallback if no localized description is set) */
   description: string
   image: string
+  /** Optional localized fields used by the public team page */
+  nameEn?: string
+  nameAr?: string
+  roleEn?: string
+  roleAr?: string
+  descriptionEn?: string
+  descriptionAr?: string
   createdAt: string
   updatedAt: string
 }
 
 const STORAGE_KEY = 'admin_authenticated'
+const USER_STORAGE_KEY = 'admin_user'
 
 export default function AdminTeamPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -23,6 +33,7 @@ export default function AdminTeamPage() {
   const [error, setError] = useState<string | null>(null)
   const [members, setMembers] = useState<TeamMember[]>([])
   const [showAddForm, setShowAddForm] = useState(false)
+  const [editingMember, setEditingMember] = useState<TeamMember | null>(null)
   const router = useRouter()
 
   const baseUrl = ''
@@ -35,6 +46,25 @@ export default function AdminTeamPage() {
       router.replace('/admin')
       return
     }
+
+    const rawUser = localStorage.getItem(USER_STORAGE_KEY)
+    if (rawUser) {
+      try {
+        const user = JSON.parse(rawUser) as {
+          role?: 'admin' | 'editor' | 'viewer'
+          canManageTeam?: boolean
+        }
+        const canManage = user.canManageTeam ?? (user.role === 'admin' || user.role === 'editor')
+        if (!canManage) {
+          router.replace('/admin')
+          return
+        }
+      } catch {
+        router.replace('/admin')
+        return
+      }
+    }
+
     void fetchMembers()
   }, [router])
 
@@ -103,7 +133,10 @@ export default function AdminTeamPage() {
               Back to dashboard
             </Link>
             <button
-              onClick={() => setShowAddForm(!showAddForm)}
+              onClick={() => {
+                setEditingMember(null)
+                setShowAddForm(!showAddForm)
+              }}
               className="btn btn-primary flex items-center gap-2"
             >
               <PlusCircle className="h-4 w-4" />
@@ -131,13 +164,25 @@ export default function AdminTeamPage() {
           </div>
         )}
 
-        {showAddForm && (
+        {showAddForm && !editingMember && (
           <AddMemberForm
             onSuccess={() => {
               setShowAddForm(false)
               void fetchMembers()
             }}
             onCancel={() => setShowAddForm(false)}
+            baseUrl={baseUrl}
+          />
+        )}
+
+        {editingMember && (
+          <EditMemberForm
+            member={editingMember}
+            onSuccess={() => {
+              setEditingMember(null)
+              void fetchMembers()
+            }}
+            onCancel={() => setEditingMember(null)}
             baseUrl={baseUrl}
           />
         )}
@@ -153,33 +198,356 @@ export default function AdminTeamPage() {
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {members.map((member) => (
-              <div
-                key={member.id}
-                className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="h-16 w-16 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={member.image} alt={member.name} className="h-full w-full object-cover" />
+            {members.map((member) => {
+              const displayName = member.nameEn || member.nameAr || member.name
+              const displayRole = member.roleEn || member.roleAr || member.role || 'Team Member'
+              const displayDescription =
+                member.descriptionEn || member.descriptionAr || member.description
+
+              return (
+                <div
+                  key={member.id}
+                  className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="h-16 w-16 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={member.image} alt={displayName} className="w-full h-full object-contain" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg font-semibold text-primary">{displayName}</h3>
+                      <p className="text-sm text-neutral-500">{displayRole}</p>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowAddForm(false)
+                          setEditingMember(member)
+                        }}
+                        className="btn btn-light px-3 py-1 text-xs"
+                      >
+                        <Pencil className="h-3 w-3 mr-1 inline-block" />
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => deleteMember(member.id)}
+                        className="btn bg-red-500 text-white hover:bg-red-600 px-3 py-1 text-xs"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-semibold text-primary">{member.name}</h3>
-                    <p className="text-sm text-neutral-500">{member.role || 'Team Member'}</p>
-                  </div>
-                  <button
-                    onClick={() => deleteMember(member.id)}
-                    className="btn bg-red-500 text-white hover:bg-red-600"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+                  <p className="mt-4 text-sm text-neutral-700 leading-relaxed">{displayDescription}</p>
                 </div>
-                <p className="mt-4 text-sm text-neutral-700 leading-relaxed">{member.description}</p>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </main>
+    </div>
+  )
+}
+
+function EditMemberForm({
+  member,
+  onSuccess,
+  onCancel,
+  baseUrl
+}: {
+  member: TeamMember
+  onSuccess: () => void
+  onCancel: () => void
+  baseUrl: string
+}) {
+  const [nameEn, setNameEn] = useState(member.nameEn ?? member.name)
+  const [nameAr, setNameAr] = useState(member.nameAr ?? '')
+  const [roleEn, setRoleEn] = useState(member.roleEn ?? member.role ?? '')
+  const [roleAr, setRoleAr] = useState(member.roleAr ?? '')
+  const [descriptionEn, setDescriptionEn] = useState(member.descriptionEn ?? member.description)
+  const [descriptionAr, setDescriptionAr] = useState(member.descriptionAr ?? '')
+  const [image, setImage] = useState(member.image)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [imageUploading, setImageUploading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const handleImageUpload = async (file: File) => {
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file')
+      return
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size must be less than 5MB')
+      return
+    }
+
+    const previewUrl = URL.createObjectURL(file)
+    setImagePreview(previewUrl)
+    setImageUploading(true)
+    setError(null)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const url = baseUrl ? `${baseUrl}/api/upload` : '/api/upload'
+      const res = await fetch(url, {
+        method: 'POST',
+        body: formData
+      })
+
+      if (!res.ok) {
+        const text = await res.text()
+        let data = {}
+        try {
+          data = JSON.parse(text)
+        } catch {
+          // ignore non-JSON
+        }
+        throw new Error((data as { message?: string }).message || `Upload failed: ${res.status}`)
+      }
+
+      const data = await res.json()
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl)
+      }
+      setImage(data.url)
+      setImagePreview(null)
+    } catch (err: any) {
+      setError(err.message || 'Failed to upload image')
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl)
+      }
+      setImagePreview(null)
+    } finally {
+      setImageUploading(false)
+    }
+  }
+
+  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      handleImageUpload(file)
+    }
+  }
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setIsDragging(false)
+    const file = event.dataTransfer.files?.[0]
+    if (file) {
+      handleImageUpload(file)
+    }
+  }
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+    setError(null)
+
+    if (!nameEn.trim() && !nameAr.trim()) {
+      setError('Please provide a name in English or Arabic.')
+      return
+    }
+    if (!descriptionEn.trim() && !descriptionAr.trim()) {
+      setError('Please provide a description in English or Arabic.')
+      return
+    }
+    if (!image.trim()) {
+      setError('Please upload or paste an image URL.')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const url = baseUrl ? `${baseUrl}/api/team/${member.id}` : `/api/team/${member.id}`
+      const res = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nameEn: nameEn || undefined,
+          nameAr: nameAr || undefined,
+          roleEn: roleEn || undefined,
+          roleAr: roleAr || undefined,
+          descriptionEn: descriptionEn || undefined,
+          descriptionAr: descriptionAr || undefined,
+          image
+        })
+      })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || 'Failed to update team member')
+      }
+
+      onSuccess()
+    } catch (err: any) {
+      console.error(err)
+      setError(err.message || 'Failed to update team member')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="mb-6 rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-primary mb-4">Edit Team Member</h2>
+      {error && (
+        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          {error}
+        </div>
+      )}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Name (English)</label>
+            <input
+              type="text"
+              value={nameEn}
+              onChange={(event) => setNameEn(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="e.g. Abdul Rahman Al-Saqlawi"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Name (Arabic)</label>
+            <input
+              type="text"
+              value={nameAr}
+              onChange={(event) => setNameAr(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="مثال: عبدالرحمن السقلاوي"
+            />
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Role (English)</label>
+            <input
+              type="text"
+              value={roleEn}
+              onChange={(event) => setRoleEn(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="Executive Director"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Role (Arabic)</label>
+            <input
+              type="text"
+              value={roleAr}
+              onChange={(event) => setRoleAr(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="المدير التنفيذي"
+            />
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Description (English)</label>
+            <textarea
+              value={descriptionEn}
+              onChange={(event) => setDescriptionEn(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              rows={4}
+              placeholder="English bio for the team page"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Description (Arabic)</label>
+            <textarea
+              value={descriptionAr}
+              onChange={(event) => setDescriptionAr(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              rows={4}
+              placeholder="السيرة العربية لعضو الفريق"
+            />
+          </div>
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-medium text-neutral-600">Image</label>
+          <div
+            className={`rounded-lg border-2 border-dashed px-4 py-6 text-center transition ${
+              isDragging ? 'border-primary bg-primary/5' : 'border-neutral-300'
+            }`}
+            onDragOver={(event) => {
+              event.preventDefault()
+              event.stopPropagation()
+              setIsDragging(true)
+            }}
+            onDragLeave={() => setIsDragging(false)}
+            onDrop={handleDrop}
+          >
+            <input
+              id={`team-image-upload-${member.id}`}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileInputChange}
+            />
+            <div className="text-sm text-neutral-600">
+              Drag & drop a new image here, or{' '}
+              <label htmlFor={`team-image-upload-${member.id}`} className="text-primary underline cursor-pointer">
+                choose a file
+              </label>
+            </div>
+            <div className="mt-2 text-xs text-neutral-500">Max size 5MB</div>
+            {(imagePreview || image) && (
+              <div className="mt-4">
+                <div className="mx-auto h-28 w-28 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={imagePreview || image}
+                    alt="Preview"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                {image && (
+                  <div className="mt-2 text-xs text-neutral-500 break-all">{image}</div>
+                )}
+              </div>
+            )}
+            {imageUploading && (
+              <div className="mt-3 text-xs text-neutral-500">Uploading image…</div>
+            )}
+          </div>
+          <div className="mt-3">
+            <label className="mb-1 block text-xs font-medium text-neutral-500">
+              Or paste an image URL
+            </label>
+            <input
+              type="text"
+              value={image}
+              onChange={(event) => setImage(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="/team/member.jpg"
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn btn-primary disabled:opacity-60"
+          >
+            {loading ? 'Saving...' : 'Save Changes'}
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="btn btn-light"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
     </div>
   )
 }
@@ -193,9 +561,12 @@ function AddMemberForm({
   onCancel: () => void
   baseUrl: string
 }) {
-  const [name, setName] = useState('')
-  const [role, setRole] = useState('')
-  const [description, setDescription] = useState('')
+  const [nameEn, setNameEn] = useState('')
+  const [nameAr, setNameAr] = useState('')
+  const [roleEn, setRoleEn] = useState('')
+  const [roleAr, setRoleAr] = useState('')
+  const [descriptionEn, setDescriptionEn] = useState('')
+  const [descriptionAr, setDescriptionAr] = useState('')
   const [image, setImage] = useState('')
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [imageUploading, setImageUploading] = useState(false)
@@ -276,8 +647,22 @@ function AddMemberForm({
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    setLoading(true)
     setError(null)
+
+    if (!nameEn.trim() && !nameAr.trim()) {
+      setError('Please provide a name in English or Arabic.')
+      return
+    }
+    if (!descriptionEn.trim() && !descriptionAr.trim()) {
+      setError('Please provide a description in English or Arabic.')
+      return
+    }
+    if (!image.trim()) {
+      setError('Please upload or paste an image URL.')
+      return
+    }
+
+    setLoading(true)
 
     try {
       const url = baseUrl ? `${baseUrl}/api/team` : '/api/team'
@@ -287,9 +672,12 @@ function AddMemberForm({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name,
-          role,
-          description,
+          nameEn: nameEn || undefined,
+          nameAr: nameAr || undefined,
+          roleEn: roleEn || undefined,
+          roleAr: roleAr || undefined,
+          descriptionEn: descriptionEn || undefined,
+          descriptionAr: descriptionAr || undefined,
           image
         })
       })
@@ -299,9 +687,12 @@ function AddMemberForm({
         throw new Error(data.error || 'Failed to create team member')
       }
 
-      setName('')
-      setRole('')
-      setDescription('')
+      setNameEn('')
+      setNameAr('')
+      setRoleEn('')
+      setRoleAr('')
+      setDescriptionEn('')
+      setDescriptionAr('')
       setImage('')
       setImagePreview(null)
       onSuccess()
@@ -324,35 +715,69 @@ function AddMemberForm({
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="mb-1 block text-sm font-medium text-neutral-600">Name</label>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Name (English)</label>
             <input
               type="text"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
+              value={nameEn}
+              onChange={(event) => setNameEn(event.target.value)}
               className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-              required
+              placeholder="e.g. Abdul Rahman Al-Saqlawi"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-neutral-600">Role (optional)</label>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Name (Arabic)</label>
             <input
               type="text"
-              value={role}
-              onChange={(event) => setRole(event.target.value)}
+              value={nameAr}
+              onChange={(event) => setNameAr(event.target.value)}
               className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-              placeholder="Team Member"
+              placeholder="مثال: عبدالرحمن السقلاوي"
             />
           </div>
         </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium text-neutral-600">Description</label>
-          <textarea
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-            rows={4}
-            required
-          />
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Role (English)</label>
+            <input
+              type="text"
+              value={roleEn}
+              onChange={(event) => setRoleEn(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="Executive Director"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Role (Arabic)</label>
+            <input
+              type="text"
+              value={roleAr}
+              onChange={(event) => setRoleAr(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="المدير التنفيذي"
+            />
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Description (English)</label>
+            <textarea
+              value={descriptionEn}
+              onChange={(event) => setDescriptionEn(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              rows={4}
+              placeholder="English bio for the team page"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm font-medium text-neutral-600">Description (Arabic)</label>
+            <textarea
+              value={descriptionAr}
+              onChange={(event) => setDescriptionAr(event.target.value)}
+              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              rows={4}
+              placeholder="السيرة العربية لعضو الفريق"
+            />
+          </div>
         </div>
         <div>
           <label className="mb-1 block text-sm font-medium text-neutral-600">Image</label>
@@ -389,7 +814,7 @@ function AddMemberForm({
                   <img
                     src={imagePreview || image}
                     alt="Preview"
-                    className="h-full w-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
                 {image && (

@@ -15,9 +15,14 @@ type User = {
   active: boolean
   createdAt: string
   updatedAt: string
+  canManageBlogs?: boolean
+  canManageTeam?: boolean
+  canManageConsultations?: boolean
+  canManageUsers?: boolean
 }
 
 const STORAGE_KEY = 'admin_authenticated'
+const USER_STORAGE_KEY = 'admin_user'
 
 export default function AdminUsersPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -38,6 +43,25 @@ export default function AdminUsersPage() {
       router.replace('/admin')
       return
     }
+
+    const rawUser = localStorage.getItem(USER_STORAGE_KEY)
+    if (rawUser) {
+      try {
+        const user = JSON.parse(rawUser) as {
+          role?: UserRole
+          canManageUsers?: boolean
+        }
+        const canManage = user.canManageUsers ?? user.role === 'admin'
+        if (!canManage) {
+          router.replace('/admin')
+          return
+        }
+      } catch {
+        router.replace('/admin')
+        return
+      }
+    }
+
     void fetchUsers()
   }, [router])
 
@@ -266,8 +290,34 @@ function AddUserForm({
   const [password, setPassword] = useState('')
   const [role, setRole] = useState<UserRole>('admin')
   const [active, setActive] = useState(true)
+  const [canManageBlogs, setCanManageBlogs] = useState(true)
+  const [canManageTeam, setCanManageTeam] = useState(true)
+  const [canManageConsultations, setCanManageConsultations] = useState(true)
+  const [canManageUsers, setCanManageUsers] = useState(true)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const applyRolePreset = (nextRole: UserRole) => {
+    setRole(nextRole)
+    // Sensible defaults for each role; can still be changed manually
+    if (nextRole === 'admin') {
+      setCanManageBlogs(true)
+      setCanManageTeam(true)
+      setCanManageConsultations(true)
+      setCanManageUsers(true)
+    } else if (nextRole === 'editor') {
+      setCanManageBlogs(true)
+      setCanManageTeam(true)
+      setCanManageConsultations(true)
+      setCanManageUsers(false)
+    } else {
+      // viewer
+      setCanManageBlogs(false)
+      setCanManageTeam(false)
+      setCanManageConsultations(false)
+      setCanManageUsers(false)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -281,7 +331,17 @@ function AddUserForm({
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, email, password, role, active })
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          role,
+          active,
+          canManageBlogs,
+          canManageTeam,
+          canManageConsultations,
+          canManageUsers
+        })
       })
 
       if (!res.ok) {
@@ -346,14 +406,52 @@ function AddUserForm({
             <label className="mb-1 block text-sm font-medium text-neutral-600">Role</label>
             <select
               value={role}
-              onChange={(e) => setRole(e.target.value as UserRole)}
+              onChange={(e) => applyRolePreset(e.target.value as UserRole)}
               className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
             >
-              <option value="viewer">Viewer</option>
-              <option value="editor">Editor</option>
-              <option value="admin">Admin</option>
+              <option value="viewer">Viewer (read-only)</option>
+              <option value="editor">Editor (content only)</option>
+              <option value="admin">Admin (full access)</option>
             </select>
           </div>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+          <label className="flex items-center gap-2 text-sm text-neutral-700">
+            <input
+              type="checkbox"
+              checked={canManageBlogs}
+              onChange={(e) => setCanManageBlogs(e.target.checked)}
+              className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
+            />
+            <span>Blogs</span>
+          </label>
+          <label className="flex items-center gap-2 text-sm text-neutral-700">
+            <input
+              type="checkbox"
+              checked={canManageTeam}
+              onChange={(e) => setCanManageTeam(e.target.checked)}
+              className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
+            />
+            <span>Team members</span>
+          </label>
+          <label className="flex items-center gap-2 text-sm text-neutral-700">
+            <input
+              type="checkbox"
+              checked={canManageConsultations}
+              onChange={(e) => setCanManageConsultations(e.target.checked)}
+              className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
+            />
+            <span>Consultations</span>
+          </label>
+          <label className="flex items-center gap-2 text-sm text-neutral-700">
+            <input
+              type="checkbox"
+              checked={canManageUsers}
+              onChange={(e) => setCanManageUsers(e.target.checked)}
+              className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
+            />
+            <span>Manage users</span>
+          </label>
         </div>
         <div className="flex items-center gap-3">
           <input

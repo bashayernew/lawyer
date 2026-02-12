@@ -7,17 +7,36 @@ import { BookOpen, Briefcase, ClipboardList, FilePlus2, LogOut, Users } from 'lu
 const STORAGE_KEY = 'admin_authenticated'
 const USER_STORAGE_KEY = 'admin_user'
 
+type AdminUser = {
+  role?: 'admin' | 'editor' | 'viewer'
+  canManageBlogs?: boolean
+  canManageTeam?: boolean
+  canManageConsultations?: boolean
+  canManageUsers?: boolean
+}
+
 export default function AdminDashboard() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [currentUser, setCurrentUser] = useState<AdminUser | null>(null)
   const router = useRouter()
 
   useEffect(() => {
     const storedAuth = localStorage.getItem(STORAGE_KEY) === 'true'
     setIsAuthenticated(storedAuth)
+    if (storedAuth) {
+      const rawUser = localStorage.getItem(USER_STORAGE_KEY)
+      if (rawUser) {
+        try {
+          setCurrentUser(JSON.parse(rawUser))
+        } catch {
+          setCurrentUser(null)
+        }
+      }
+    }
   }, [])
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -44,6 +63,7 @@ export default function AdminDashboard() {
       localStorage.setItem(STORAGE_KEY, 'true')
       localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(data.user))
       setIsAuthenticated(true)
+      setCurrentUser(data.user as AdminUser)
       setError(null)
       setEmail('')
       setPassword('')
@@ -63,6 +83,7 @@ export default function AdminDashboard() {
       localStorage.removeItem(STORAGE_KEY)
       localStorage.removeItem(USER_STORAGE_KEY)
       setIsAuthenticated(false)
+      setCurrentUser(null)
       setEmail('')
       setPassword('')
       router.push('/admin')
@@ -82,10 +103,12 @@ export default function AdminDashboard() {
               <label className="mb-2 block text-sm font-medium text-neutral-700">Email or Username</label>
               <input
                 type="text"
+                name="admin-email"
+                autoComplete="off"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-800 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-                placeholder="admin@123123.com"
+                placeholder="Email or username"
                 required
                 autoFocus
               />
@@ -114,6 +137,16 @@ export default function AdminDashboard() {
     )
   }
 
+  const isAdmin = currentUser?.role === 'admin'
+  const canManageBlogs =
+    currentUser?.canManageBlogs ?? (currentUser ? currentUser.role === 'admin' || currentUser.role === 'editor' : false)
+  const canManageTeam =
+    currentUser?.canManageTeam ?? (currentUser ? currentUser.role === 'admin' || currentUser.role === 'editor' : false)
+  const canManageConsultations =
+    currentUser?.canManageConsultations ??
+    (currentUser ? currentUser.role === 'admin' || currentUser.role === 'editor' : false)
+  const canManageUsers = currentUser?.canManageUsers ?? isAdmin
+
   return (
     <div className="min-h-screen bg-neutral-50">
       <header className="border-b border-neutral-200 bg-white/90 backdrop-blur">
@@ -134,10 +167,11 @@ export default function AdminDashboard() {
 
       <main className="container py-10">
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          <Link
-            href="/admin/blog/new"
-            className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-          >
+          {canManageBlogs && (
+            <Link
+              href="/admin/blog/new"
+              className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            >
             <div className="flex items-center gap-3">
               <div className="rounded-xl bg-primary/10 p-3 text-primary">
                 <FilePlus2 className="h-6 w-6" />
@@ -150,12 +184,14 @@ export default function AdminDashboard() {
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary">
               Start writing →
             </span>
-          </Link>
+            </Link>
+          )}
 
-          <Link
-            href="/admin/blog"
-            className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-          >
+          {canManageBlogs && (
+            <Link
+              href="/admin/blog"
+              className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            >
             <div className="flex items-center gap-3">
               <div className="rounded-xl bg-forest/10 p-3 text-forest">
                 <BookOpen className="h-6 w-6" />
@@ -168,12 +204,14 @@ export default function AdminDashboard() {
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-forest">
               View posts →
             </span>
-          </Link>
+            </Link>
+          )}
 
-          <Link
-            href="/admin/consultations"
-            className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-          >
+          {canManageConsultations && (
+            <Link
+              href="/admin/consultations"
+              className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            >
             <div className="flex items-center gap-3">
               <div className="rounded-xl bg-amber-100 p-3 text-amber-600">
                 <ClipboardList className="h-6 w-6" />
@@ -186,12 +224,14 @@ export default function AdminDashboard() {
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-amber-600">
               Open inbox →
             </span>
-          </Link>
+            </Link>
+          )}
 
-          <Link
-            href="/admin/users"
-            className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg cursor-pointer"
-          >
+          {canManageUsers && (
+            <Link
+              href="/admin/users"
+              className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+            >
             <div className="flex items-center gap-3">
               <div className="rounded-xl bg-purple-100 p-3 text-purple-600">
                 <Users className="h-6 w-6" />
@@ -204,12 +244,14 @@ export default function AdminDashboard() {
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-purple-600">
               Manage users →
             </span>
-          </Link>
+            </Link>
+          )}
 
-          <Link
-            href="/admin/team"
-            className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-          >
+          {canManageTeam && (
+            <Link
+              href="/admin/team"
+              className="card group flex flex-col justify-between rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            >
             <div className="flex items-center gap-3">
               <div className="rounded-xl bg-sky-100 p-3 text-sky-600">
                 <Briefcase className="h-6 w-6" />
@@ -222,7 +264,8 @@ export default function AdminDashboard() {
             <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sky-600">
               Manage team →
             </span>
-          </Link>
+            </Link>
+          )}
         </div>
       </main>
     </div>

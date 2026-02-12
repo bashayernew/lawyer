@@ -11,6 +11,11 @@ export type UserRecord = {
   password: string // In production, this should be hashed
   role: UserRole
   active: boolean
+  /** Optional fine-grained permissions; when undefined, inferred from role */
+  canManageBlogs?: boolean
+  canManageTeam?: boolean
+  canManageConsultations?: boolean
+  canManageUsers?: boolean
   createdAt: string
   updatedAt: string
 }
@@ -23,6 +28,38 @@ function normalizeUser(record: UserRecord): UserRecord {
   return {
     ...record,
     id: String(record.id)
+  }
+}
+
+export function defaultPermissionsForRole(role: UserRole): Pick<
+  UserRecord,
+  'canManageBlogs' | 'canManageTeam' | 'canManageConsultations' | 'canManageUsers'
+> {
+  switch (role) {
+    case 'admin':
+      return {
+        canManageBlogs: true,
+        canManageTeam: true,
+        canManageConsultations: true,
+        canManageUsers: true
+      }
+    case 'editor':
+      // Editor: can manage blogs and team, and see/manage consultations, but not users
+      return {
+        canManageBlogs: true,
+        canManageTeam: true,
+        canManageConsultations: true,
+        canManageUsers: false
+      }
+    case 'viewer':
+    default:
+      // Viewer: dashboard-only / read-only
+      return {
+        canManageBlogs: false,
+        canManageTeam: false,
+        canManageConsultations: false,
+        canManageUsers: false
+      }
   }
 }
 
@@ -84,9 +121,7 @@ export async function readUsersAsync(): Promise<UserRecord[]> {
   const kvUsers = await readUsersFromKV()
   if (kvUsers !== null && kvUsers.length > 0) {
     return kvUsers
-  }
-
-  try {
+  }  try {
     const fileUsers = readUsers()
     if (fileUsers.length > 0 && process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
       try {

@@ -15,9 +15,14 @@ type User = {
   active: boolean
   createdAt: string
   updatedAt: string
+  canManageBlogs?: boolean
+  canManageTeam?: boolean
+  canManageConsultations?: boolean
+  canManageUsers?: boolean
 }
 
 const STORAGE_KEY = 'admin_authenticated'
+const USER_STORAGE_KEY = 'admin_user'
 
 export default function EditUserPage() {
   const router = useRouter()
@@ -32,6 +37,10 @@ export default function EditUserPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [canManageBlogs, setCanManageBlogs] = useState(false)
+  const [canManageTeam, setCanManageTeam] = useState(false)
+  const [canManageConsultations, setCanManageConsultations] = useState(false)
+  const [canManageUsers, setCanManageUsers] = useState(false)
 
   // Use relative URLs - works in both local and production
   const baseUrl = ''
@@ -42,6 +51,25 @@ export default function EditUserPage() {
       router.replace('/admin')
       return
     }
+
+    const rawUser = localStorage.getItem(USER_STORAGE_KEY)
+    if (rawUser) {
+      try {
+        const user = JSON.parse(rawUser) as {
+          role?: UserRole
+          canManageUsers?: boolean
+        }
+        const canManage = user.canManageUsers ?? user.role === 'admin'
+        if (!canManage) {
+          router.replace('/admin')
+          return
+        }
+      } catch {
+        router.replace('/admin')
+        return
+      }
+    }
+
     if (userId) {
       void loadUser(userId)
     }
@@ -64,6 +92,10 @@ export default function EditUserPage() {
       setEmail(user.email)
       setRole(user.role)
       setActive(user.active)
+      setCanManageBlogs(Boolean(user.canManageBlogs))
+      setCanManageTeam(Boolean(user.canManageTeam))
+      setCanManageConsultations(Boolean(user.canManageConsultations))
+      setCanManageUsers(Boolean(user.canManageUsers))
       setPassword('') // Don't pre-fill password
     } catch (err: any) {
       console.error(err)
@@ -83,7 +115,11 @@ export default function EditUserPage() {
       name,
       email,
       role,
-      active
+      active,
+      canManageBlogs,
+      canManageTeam,
+      canManageConsultations,
+      canManageUsers
     }
 
     // Only include password if it's been changed
@@ -225,11 +261,49 @@ export default function EditUserPage() {
                   onChange={(e) => setRole(e.target.value as UserRole)}
                   className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
                 >
-                  <option value="viewer">Viewer</option>
-                  <option value="editor">Editor</option>
-                  <option value="admin">Admin</option>
+                  <option value="viewer">Viewer (read-only)</option>
+                  <option value="editor">Editor (content only)</option>
+                  <option value="admin">Admin (full access)</option>
                 </select>
               </div>
+            </div>
+            <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+              <label className="flex items-center gap-2 text-sm text-neutral-700">
+                <input
+                  type="checkbox"
+                  checked={canManageBlogs}
+                  onChange={(e) => setCanManageBlogs(e.target.checked)}
+                  className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
+                />
+                <span>Blogs</span>
+              </label>
+              <label className="flex items-center gap-2 text-sm text-neutral-700">
+                <input
+                  type="checkbox"
+                  checked={canManageTeam}
+                  onChange={(e) => setCanManageTeam(e.target.checked)}
+                  className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
+                />
+                <span>Team members</span>
+              </label>
+              <label className="flex items-center gap-2 text-sm text-neutral-700">
+                <input
+                  type="checkbox"
+                  checked={canManageConsultations}
+                  onChange={(e) => setCanManageConsultations(e.target.checked)}
+                  className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
+                />
+                <span>Consultations</span>
+              </label>
+              <label className="flex items-center gap-2 text-sm text-neutral-700">
+                <input
+                  type="checkbox"
+                  checked={canManageUsers}
+                  onChange={(e) => setCanManageUsers(e.target.checked)}
+                  className="h-4 w-4 rounded border-neutral-300 text-primary focus:ring-primary"
+                />
+                <span>Manage users</span>
+              </label>
             </div>
             <div className="mt-4 flex items-center gap-3">
               <input

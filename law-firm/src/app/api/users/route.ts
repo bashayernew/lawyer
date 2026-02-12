@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { UserRecord, readUsersAsync, writeUsersAsync } from '@/lib/users'
+import { UserRecord, readUsersAsync, writeUsersAsync, defaultPermissionsForRole, UserRole } from '@/lib/users'
 import { isAuthorized } from '@/lib/auth'
 
 function kvConfigured() {
@@ -36,7 +36,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
     }
     const body = await request.json()
-    const { name, email, password, role, active } = body
+    const {
+      name,
+      email,
+      password,
+      role,
+      active,
+      canManageBlogs,
+      canManageTeam,
+      canManageConsultations,
+      canManageUsers
+    } = body
 
     if (!name || !email || !password) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -50,13 +60,19 @@ export async function POST(request: NextRequest) {
     }
 
     const now = new Date().toISOString()
+    const baseRole: UserRole = (role || 'admin') as UserRole
+    const roleDefaults = defaultPermissionsForRole(baseRole)
     const newUser: UserRecord = {
       id: Date.now().toString(),
       name,
       email,
       password, // In production, hash this password
-      role: role || 'admin',
+      role: baseRole,
       active: active !== undefined ? active : true,
+      canManageBlogs: canManageBlogs ?? roleDefaults.canManageBlogs,
+      canManageTeam: canManageTeam ?? roleDefaults.canManageTeam,
+      canManageConsultations: canManageConsultations ?? roleDefaults.canManageConsultations,
+      canManageUsers: canManageUsers ?? roleDefaults.canManageUsers,
       createdAt: now,
       updatedAt: now
     }

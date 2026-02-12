@@ -75,9 +75,7 @@ export async function readConsultationsAsync(): Promise<ConsultationRecord[]> {
   const kvRecords = await readConsultationsFromKV()
   if (kvRecords !== null && kvRecords.length > 0) {
     return kvRecords
-  }
-
-  try {
+  }  try {
     const fileRecords = await readConsultations()
     if (fileRecords.length > 0 && process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
       try {
@@ -104,7 +102,5 @@ export async function writeConsultationsAsync(records: ConsultationRecord[]) {
 
   if (process.env.NODE_ENV === 'production') {
     throw new Error('KV not configured')
-  }
-
-  await writeConsultations(records)
+  }  await writeConsultations(records)
 }

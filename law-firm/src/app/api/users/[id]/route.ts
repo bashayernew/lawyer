@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { UserRecord, readUsersAsync, writeUsersAsync } from '@/lib/users'
+import { UserRecord, readUsersAsync, writeUsersAsync, defaultPermissionsForRole, UserRole } from '@/lib/users'
 import { isAuthorized } from '@/lib/auth'
 
 function kvConfigured() {
@@ -48,7 +48,17 @@ export async function PUT(
       return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
     }
     const body = await request.json()
-    const { name, email, password, role, active } = body
+    const {
+      name,
+      email,
+      password,
+      role,
+      active,
+      canManageBlogs,
+      canManageTeam,
+      canManageConsultations,
+      canManageUsers
+    } = body
 
     const users = await readUsersAsync()
     const normalizedId = String(params.id)
@@ -65,14 +75,28 @@ export async function PUT(
       }
     }
 
+    const existing = users[index]
+    const nextRole: UserRole = (role || existing.role) as UserRole
+    const roleDefaults = defaultPermissionsForRole(nextRole)
+
     // Update user
     users[index] = {
-      ...users[index],
+      ...existing,
       ...(name && { name }),
       ...(email && { email }),
       ...(password && { password }), // In production, hash this password
-      ...(role && { role }),
+      ...(role && { role: nextRole }),
       ...(active !== undefined && { active }),
+      canManageBlogs:
+        canManageBlogs !== undefined ? canManageBlogs : existing.canManageBlogs ?? roleDefaults.canManageBlogs,
+      canManageTeam:
+        canManageTeam !== undefined ? canManageTeam : existing.canManageTeam ?? roleDefaults.canManageTeam,
+      canManageConsultations:
+        canManageConsultations !== undefined
+          ? canManageConsultations
+          : existing.canManageConsultations ?? roleDefaults.canManageConsultations,
+      canManageUsers:
+        canManageUsers !== undefined ? canManageUsers : existing.canManageUsers ?? roleDefaults.canManageUsers,
       updatedAt: new Date().toISOString()
     }
 

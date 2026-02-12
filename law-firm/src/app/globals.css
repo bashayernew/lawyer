@@ -12,6 +12,7 @@ html {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Default: disable text selection (basic copy prevention) */
 body { 
   @apply text-white font-sans;
   line-height: 1.7;
@@ -21,6 +22,17 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
   position: relative;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow selection inside form fields so users can edit easily */
+input,
+textarea {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 /* Ensure sections have proper backgrounds */

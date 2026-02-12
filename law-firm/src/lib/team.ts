@@ -7,6 +7,13 @@ export type TeamMemberRecord = {
   name: string
   role?: string
   description: string
+  /** Bilingual: when set, public page uses by locale */
+  nameEn?: string
+  nameAr?: string
+  roleEn?: string
+  roleAr?: string
+  descriptionEn?: string
+  descriptionAr?: string
   image: string
   createdAt: string
   updatedAt: string

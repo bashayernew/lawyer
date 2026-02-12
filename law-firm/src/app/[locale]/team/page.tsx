@@ -11,22 +11,7 @@ export default async function TeamPage({ params: { locale } }: { params: { local
   const content = (await import(`@/content/${locale}.json`)).default
   const storedMembers = await readTeamAsync()
   const isAr = locale === 'ar'
-  const members =
-    storedMembers.length > 0
-      ? isAr
-        ? storedMembers.map((m: any, i: number) => {
-            const localeMember = content.team.members[i]
-            if (!localeMember) return m
-            return {
-              ...m,
-              name: localeMember.name ?? m.name,
-              role: localeMember.role ?? m.role,
-              bullets: localeMember.bullets ?? m.bullets,
-              description: localeMember.description ?? m.description,
-            }
-          })
-        : storedMembers
-      : content.team.members
+  const members = storedMembers.length > 0 ? storedMembers : content.team.members
   const about = content.about
   const blogSections = content.team.blogSections || []
   const icons = [Zap, Target, Award]
@@ -62,10 +47,18 @@ export default async function TeamPage({ params: { locale } }: { params: { local
                 <div className="flex-1 min-w-0 pt-1">
                   <div className="flex items-start gap-2 mb-2">
                     <Briefcase className="h-5 w-5 text-white mt-0.5 flex-shrink-0" strokeWidth={2} />
-                    <h3 className="text-xl font-bold text-white">{m.name}</h3>
+                    <h3 className="text-xl font-bold text-white">
+                      {'nameEn' in m || 'nameAr' in m
+                        ? (isAr ? (m as any).nameAr || (m as any).name || '' : (m as any).nameEn || (m as any).name || '')
+                        : (m as any).name}
+                    </h3>
                   </div>
                   <p className="text-base font-semibold text-white/90 mb-4">
-                    {m.role || (isAr ? 'عضو الفريق' : 'Team Member')}
+                    {'roleEn' in m || 'roleAr' in m
+                      ? (isAr
+                          ? (m as any).roleAr || (m as any).role || 'عضو الفريق'
+                          : (m as any).roleEn || (m as any).role || 'Team Member')
+                      : (m as any).role || (isAr ? 'عضو الفريق' : 'Team Member')}
                   </p>
                   {Array.isArray(m.bullets) && m.bullets.length > 0 ? (
                     <ul className="space-y-2.5">
@@ -81,9 +74,11 @@ export default async function TeamPage({ params: { locale } }: { params: { local
                         </li>
                       ))}
                     </ul>
-                  ) : m.description ? (
+                  ) : (('descriptionEn' in m || 'descriptionAr' in m) ? ((isAr ? (m as any).descriptionAr : (m as any).descriptionEn) ?? (m as any).description) : (m as any).description) ? (
                     <p className="text-sm text-white/90 leading-relaxed font-medium">
-                      {m.description}
+                      {('descriptionEn' in m || 'descriptionAr' in m)
+                        ? (isAr ? (m as any).descriptionAr || (m as any).description : (m as any).descriptionEn || (m as any).description)
+                        : (m as any).description}
                     </p>
                   ) : null}
                 </div>

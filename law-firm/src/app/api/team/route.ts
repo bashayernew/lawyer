@@ -37,20 +37,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'KV not configured' }, { status: 500 })
     }
     const body = await request.json()
-    const { name, role, description, image } = body
+    const {
+      name,
+      role,
+      description,
+      image,
+      nameEn,
+      nameAr,
+      roleEn,
+      roleAr,
+      descriptionEn,
+      descriptionAr
+    } = body
 
-    if (!name || !description || !image) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    const displayName = (nameEn ?? nameAr ?? name ?? '').toString().trim()
+    const displayDesc = (descriptionEn ?? descriptionAr ?? description ?? '').toString().trim()
+    if (!displayName || !displayDesc || !image) {
+      return NextResponse.json({ error: 'Provide at least name (EN or AR), description (EN or AR), and image' }, { status: 400 })
     }
 
     const members = await readTeamAsync()
     const now = new Date().toISOString()
     const newMember: TeamMemberRecord = {
       id: Date.now().toString(),
-      name: name.trim(),
-      role: role?.trim() || 'Team Member',
-      description: description.trim(),
+      name: (name ?? nameEn ?? nameAr ?? '').toString().trim(),
+      role: (role ?? roleEn ?? roleAr ?? 'Team Member').toString().trim(),
+      description: (description ?? descriptionEn ?? descriptionAr ?? '').toString().trim(),
       image: image.trim(),
+      nameEn: nameEn !== undefined && nameEn !== '' ? String(nameEn).trim() : undefined,
+      nameAr: nameAr !== undefined && nameAr !== '' ? String(nameAr).trim() : undefined,
+      roleEn: roleEn !== undefined && roleEn !== '' ? String(roleEn).trim() : undefined,
+      roleAr: roleAr !== undefined && roleAr !== '' ? String(roleAr).trim() : undefined,
+      descriptionEn: descriptionEn !== undefined && descriptionEn !== '' ? String(descriptionEn).trim() : undefined,
+      descriptionAr: descriptionAr !== undefined && descriptionAr !== '' ? String(descriptionAr).trim() : undefined,
       createdAt: now,
       updatedAt: now
     }

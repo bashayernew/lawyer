@@ -8,6 +8,7 @@ import { ArrowLeft, Loader2, Save, Trash2 } from 'lucide-react'
 type EditableLink = { textEn: string; textAr: string; url: string }
 
 const STORAGE_KEY = 'admin_authenticated'
+const USER_STORAGE_KEY = 'admin_user'
 
 export default function EditBlogPostPage() {
   const router = useRouter()
@@ -40,6 +41,26 @@ export default function EditBlogPostPage() {
       router.replace('/admin')
       return
     }
+
+    const rawUser = localStorage.getItem(USER_STORAGE_KEY)
+    if (rawUser) {
+      try {
+        const user = JSON.parse(rawUser) as {
+          role?: 'admin' | 'editor' | 'viewer'
+          canManageBlogs?: boolean
+        }
+        const canManage =
+          user.canManageBlogs ?? (user.role === 'admin' || user.role === 'editor')
+        if (!canManage) {
+          router.replace('/admin')
+          return
+        }
+      } catch {
+        router.replace('/admin')
+        return
+      }
+    }
+
     if (blogId) {
       void loadBlog(blogId)
     }
@@ -553,7 +574,7 @@ export default function EditBlogPostPage() {
                       <img 
                         src={imagePreview || image} 
                         alt="Preview" 
-                        className="h-48 w-full object-cover"
+                        className="h-48 w-full object-contain"
                         onError={(e) => {
                           console.error('Image preview error:', e)
                           setError('Failed to load image preview')
@@ -585,7 +606,9 @@ export default function EditBlogPostPage() {
 
               <div>
                 <div className="mb-3 flex items-center justify-between">
-                  <label className="text-sm font-medium text-neutral-600">Related links</label>
+                  <label className="text-sm font-medium text-neutral-600">
+                    Links (YouTube, internal pages, files…)
+                  </label>
                   <button type="button" onClick={handleAddLink} className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-forest">
                     <PlusIcon />
                     Add link
@@ -618,7 +641,7 @@ export default function EditBlogPostPage() {
                           value={link.url}
                           onChange={(event) => handleLinkChange(index, 'url', event.target.value)}
                           className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 text-sm text-neutral-700 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-                          placeholder="https://"
+                          placeholder="https://youtu.be/..., https://rekaz.com.kw/..., https://drive.google.com/..."
                         />
                         {links.length > 1 && (
                           <button
